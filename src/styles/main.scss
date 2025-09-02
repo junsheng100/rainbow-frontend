@@ -1,0 +1,83 @@
+// 全局样式
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  height: 100%;
+}
+
+// Element Plus 样式覆盖
+.el-button {
+  &--primary {
+    --el-button-bg-color: #409eff;
+    --el-button-border-color: #409eff;
+    --el-button-hover-bg-color: #66b1ff;
+    --el-button-hover-border-color: #66b1ff;
+  }
+}
+
+.el-card {
+  --el-card-border-color: #dcdfe6;
+  --el-card-border-radius: 4px;
+  --el-card-padding: 20px;
+  --el-card-bg-color: #fff;
+}
+
+.el-menu {
+  --el-menu-bg-color: #fff;
+  --el-menu-text-color: #303133;
+  --el-menu-hover-bg-color: #ecf5ff;
+  --el-menu-active-color: #409eff;
+}
+
+// 通用样式类
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.p-20 {
+  padding: 20px;
+}
+
+// 响应式布局
+@media screen and (max-width: 768px) {
+  .el-col {
+    width: 100% !important;
+  }
+} 
