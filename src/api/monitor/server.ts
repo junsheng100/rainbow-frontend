@@ -47,6 +47,6 @@ export interface ServerInfo {
 }
 
 // 查询服务器信息
-export const getServerInfo = () => {
+export function getServer() {
   return request.get<ServerInfo>('/monitor/server')
 }

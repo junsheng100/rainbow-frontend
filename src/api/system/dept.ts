@@ -1,4 +1,5 @@
 import request from '@/utils/request.ts'
+import type {BaseVo} from "@/types/common.ts"
 
 export interface DeptInfo {
     deptId?: number
@@ -32,23 +33,23 @@ export interface DeptQuery {
     status?: string // '0'正常 '1'停用
 }
 
-export interface DeptUserQuery {
-    pushType?: string
-    deptIdList?: (string | number)[]
-}
-
 // 获取部门树形列表
-export const getDeptTreeView = (vo: DeptQuery) => {
+export const getDeptList = (params?: DeptQuery) => {
+    const vo: BaseVo<DeptQuery> = {
+        data: {
+            deptName: params?.deptName
+        }
+    }
     return request.post<DeptInfo[]>('/dept/tree/view', vo)
 }
 
 // 获取子部门列表
-export const getDeptChild = (deptId: string | number) => {
+export const getChildList = (deptId: number) => {
     return request.get<DeptInfo[]>(`/dept/child/${deptId}`)
 }
 
 // 获取部门详情
-export const getDeptById = (deptId: string | number) => {
+export const getDeptInfo = (deptId: number) => {
     return request.get<DeptInfo>(`/dept/${deptId}`)
 }
 
@@ -63,17 +64,27 @@ export const updateDept = (data: DeptInfo) => {
 }
 
 // 删除部门
-export const deleteDept = (deptId: string | number) => {
+export const deleteDept = (deptId: number) => {
     return request.delete<boolean>(`/dept/${deptId}`)
 }
 
 // 获取部门选择器数据
-export const getDeptList = (vo: DeptQuery) => {
+export const getDeptSelectList = () => {
+    const vo: BaseVo<DeptQuery> = {
+        data: {
+            status: '0'
+        }
+    }
     return request.post<DeptInfo[]>('/dept/list', vo)
 }
 
 
-export const getDeptUser = (data: DeptUserQuery) => {
+export const getDeptUserList = (pushType :string,deptIdList: number[]) => {
+
+    const data = {
+        pushType : pushType,
+        deptIdList :  deptIdList
+    }
     console.log("#########",JSON.stringify(data));
     return request.post<DeptUserInfo[]>(`/dept/user`, data)
 }

@@ -366,7 +366,7 @@ watch(() => form.columnType, (newValue) => {
 const resetForm = () => {
   Object.assign(form, {
     id: '',
-    entityId: props.currentEntity.id,
+    entityId: props.currentEntity?.id || '',
     fieldName: '',
     fieldType: '',
     fieldLength: 0,

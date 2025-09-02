@@ -40,22 +40,6 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) => path.replace(/^\/api/, ''),  // 移除前缀 /api
           configure: (proxy, _options) => {
             proxy.on('proxyReq', (proxyReq, req, _res) => {
-              // 设置正确的 Origin 头
-              proxyReq.setHeader('Origin', `http://${env.VITE_DEV_SERVER_HOST || '127.0.0.1'}:${env.VITE_DEV_SERVER_PORT || '8008'}`)
-              console.log('Proxying API request:', req.url, 'to', _options.target && req.url ? _options.target + req.url : 'unknown target')
-            })
-          }
-        },
-        // 兼容旧的 /web 路径
-        '/web': {
-          target: env.VITE_DEV_PROXY_TARGET || 'http://127.0.0.1:8080',
-          changeOrigin: true,
-          secure: false,
-          ws: true,
-          rewrite: (path) => path.replace(/^\/web/, ''),  // 移除前缀 /web
-          configure: (proxy, _options) => {
-            proxy.on('proxyReq', (proxyReq, req, _res) => {
-              // 设置正确的 Origin 头
               proxyReq.setHeader('Origin', `http://${env.VITE_DEV_SERVER_HOST || '127.0.0.1'}:${env.VITE_DEV_SERVER_PORT || '8008'}`)
               console.log('Proxying API request:', req.url, 'to', _options.target && req.url ? _options.target + req.url : 'unknown target')
             })
@@ -92,7 +76,7 @@ export default defineConfig(({ mode }) => {
       terserOptions: {
         compress: {
           drop_console: env.VITE_DROP_CONSOLE === 'true',
-          drop_debugger: env.VITE_DROP_CONSOLE === 'true'
+          drop_debugger: env.VITE_DROP_DEBUGGER === 'true'
         }
       }
     },

@@ -22,50 +22,66 @@ export interface DataTypeQuery {
 }
 
 // 查询数据类型列表
-export const getDataTypePage = (vo: DataTypeQuery) => {
+export const getDataTypePageList = (params: DataTypeQuery) => {
+    const vo: BaseVo<string> = {
+    pageNo: params.pageNum,
+    pageSize: params.pageSize,
+    data:  params.keyword
+  }
   return request.post<PageResponse<DataTypeInfo>>('/template/datatype/page/list', vo)
 }
 
-export const getAllDataTypes = () => {
+export const getDataTypeList = () => {
   return request.get<DataTypeInfo[]>('/template/datatype/all')
 }
 
-export const getDataTypeById = (id: string | number) => {
+// 查询数据类型详细
+export const getDataType = (id: string) => {
   return request.get<DataTypeInfo>(`/template/datatype/${id}`)
 }
 
+// 新增数据类型
 export const createDataType = (data: DataTypeInfo) => {
   return request.post<DataTypeInfo>('/template/datatype', data)
 }
 
+// 修改数据类型
 export const updateDataType = (data: DataTypeInfo) => {
   return request.post<DataTypeInfo>('/template/datatype', data)
 }
 
-export const deleteDataType = (id: string | number) => {
+// 删除数据类型
+export const deleteDataType = (id:  string) => {
   return request.delete<boolean>(`/template/datatype/${id}`)
 }
 
-export const batchDeleteDataType = (vo: BatchDeleteVo) => {
+export const deleteBatchDataType = (ids: string[]) => {
+  const vo: CommonVo<string[]> = {
+    data: ids
+  }
   return request.post<boolean>('/template/datatype/batch/delete', vo)
 }
 
-export const getJavaDataTypes = () => {
+
+export const getJavaTypeList = () => {
   return request.get<Enums[]>('/template/datatype/java')
 }
-
-export const getDbDataTypes = () => {
+export const getDbTypeList = () => {
   return request.get<string[]>('/template/datatype/db')
 }
 
-export const uploadDataTypeFile = (formData: FormData) => {
-  return request.post<DataTypeInfo>(
+// 上传数据类型Excel文件
+export function uploadDataTypeExcel(file: File) {
+  const formData = new FormData()
+  formData.append('file', file)
+  return request.post<boolean>(
     '/template/datatype/upload',
     formData,
     {
       headers: {
         'Content-Type': 'multipart/form-data'
-      }
+      },
+      transformRequest: [(data) => data] // 防止axios对FormData进行转换
     }
   )
 }

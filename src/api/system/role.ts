@@ -30,12 +30,19 @@ export interface RoleQuery {
 }
 
 // 查询角色列表
-export const getRolePage = (vo: RoleQuery) => {
+export const getRoleList = (params: RoleQuery) => {
+  const vo: BaseVo<RoleInfo> = {
+    pageNo: params.pageNum,
+    pageSize: params.pageSize,
+    data: {
+      roleName: params.roleName
+    }
+  }
   return request.post<PageResponse<RoleInfo>>('/role/info/page', vo)
 }
 
 // 查询角色详细
-export const getRoleById = (roleId: string | number) => {
+export const getRole = (roleId: number) => {
   return request.get<RoleInfo>(`/role/info/${roleId}`)
 }
 
@@ -50,11 +57,12 @@ export const updateRole = (data: RoleInfo) => {
 }
 
 // 删除角色
-export const deleteRole = (roleId: string | number) => {
+export const deleteRole = (data: RoleInfo) => {
+  const roleId = data.roleId;
   return request.delete<boolean>(`/role/info/${roleId}`)
 }
 
-export const getRoleTree = (roleId: string | number) => {
+export const getRoleMenuTree = (roleId: number | number[]) => {
   return request.get(`/role/info/tree/${roleId}`)
 }
 

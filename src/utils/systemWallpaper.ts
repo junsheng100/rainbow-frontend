@@ -30,7 +30,7 @@ export class SystemWallpaperService {
   private currentIndex = 0
   private timer: NodeJS.Timeout | null = null
   private onImageChangeCallback: ((imageUrl: string, imageInfo: WallpaperResponse) => void) | null = null
-  private baseUrl = '/api/wallpaper'
+  private baseUrl = '/wallpaper'
 
   /**
    * 获取壁纸数据
@@ -46,7 +46,7 @@ export class SystemWallpaperService {
 
       // 获取新的壁纸数据
       // //  console.log('开始获取壁纸数据...')
-      const response = await publicService.get<ApiResponse<WallpaperResponse[]>>(`/api/wallpaper/public/latest`)
+      const response = await publicService.get<ApiResponse<WallpaperResponse[]>>(`/wallpaper/public/latest`)
 
       // //  console.log('API响应数据:', response)
       if (!response.data.code) {

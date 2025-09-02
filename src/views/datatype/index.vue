@@ -127,7 +127,7 @@ import type { FormInstance, UploadProps, UploadUserFile } from 'element-plus'
 import * as XLSX from 'xlsx-js-style'
 import { saveAs } from 'file-saver'
 import { Upload } from '@element-plus/icons-vue'
-import { getDataTypePage, getDataTypeById, deleteDataType, createDataType, updateDataType, getJavaDataTypes, uploadDataTypeFile } from '@/api/template/dataType'
+import { getDataTypePageList, getDataType, deleteBatchDataType, createDataType, updateDataType, getJavaTypeList, uploadDataTypeExcel } from '@/api/template/dataType'
 import type { DataTypeInfo, DataTypeQuery } from '@/api/template/dataType'
 import type { Enums } from '@/api/template/types'
 
@@ -174,7 +174,7 @@ const dataTypeForm = ref<FormInstance>()
 const getList = async () => {
   loading.value = true
   try {
-    const response = await getDataTypePage(queryParams)
+    const response = await getDataTypePageList(queryParams)
     typeList.value = response.content
     total.value = response.total
   } catch (error) {
@@ -219,7 +219,7 @@ const handleAdd = () => {
 const handleUpdate = async (row: DataTypeInfo) => {
   resetForm()  // 先重置表单
   try {
-    const response = await getDataTypeById(row.id as string)
+    const response = await getDataType(row.id as string)
     form.id = response.id
     form.columnType = response.columnType
     form.dataDescribe = response.dataDescribe
@@ -270,7 +270,7 @@ const handleDelete = (row?: DataTypeInfo) => {
     }
   ).then(async () => {
     try {
-      await deleteDataType(ids[0])
+      await deleteBatchDataType(ids)
       getList()
       ElMessage.success('删除成功')
     } catch (error) {
@@ -335,9 +335,7 @@ const handleFileChange = async (uploadFile: UploadUserFile) => {
     loading.value = true
     ElMessage.info('正在上传文件，请稍候...')
 
-          const formData = new FormData()
-      formData.append('file', uploadFile.raw)
-      await uploadDataTypeFile(formData)
+    await uploadDataTypeExcel(uploadFile.raw)
 
     ElMessage.success({
       message: '上传成功',
@@ -359,7 +357,7 @@ const handleFileChange = async (uploadFile: UploadUserFile) => {
 onMounted(async () => {
   await getList()
   try {
-    const javaTypes = await getJavaDataTypes()
+    const javaTypes = await getJavaTypeList()
     const options = (javaTypes || [])
       .filter((type): type is Enums => Boolean(type?.code))
       .map(type => ({

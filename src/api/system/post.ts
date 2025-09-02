@@ -23,21 +23,21 @@ export interface PostQuery {
 }
 
 // 查询岗位列表
-export const getPostPage = (vo: PostQuery) => {
-  const baseVo: BaseVo<PostInfo> = {
-    pageNo: vo.pageNum,
-    pageSize: vo.pageSize,
+export const getPostList = (params: PostQuery) => {
+  const vo: BaseVo<PostInfo> = {
+    pageNo: params.pageNum,
+    pageSize: params.pageSize,
     data: {
-      postCode: vo.postCode,
-      postName: vo.postName,
-      status: vo.status
+      postCode: params.postCode,
+      postName: params.postName,
+      status: params.status
     }
   }
-  return request.post<PageResponse<PostInfo>>('/post/info/page', baseVo)
+  return request.post<PageResponse<PostInfo>>('/post/info/page', vo)
 }
 
 // 查询岗位详细
-export const getPostById = (postId: string | number) => {
+export const getPost = (postId: number) => {
   return request.get<PostInfo>(`/post/info/${postId}`)
 }
 

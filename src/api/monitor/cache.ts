@@ -30,6 +30,6 @@ export interface CacheInfo {
 }
 
 // 获取缓存监控信息
-export const getCacheInfo = () => {
+export function getCache() {
   return request.get<CacheInfo>('/monitor/cache')
 }

@@ -133,7 +133,7 @@
                   resize="vertical"
                   show-word-limit
                   maxlength="255"
-                  @input="(val) => form.description = val.replace(/^\s+/, '')"
+                  @input="handleDescriptionInput"
               />
             </el-form-item>
             <el-form-item label="排序号" prop="orderNum">
@@ -408,6 +408,11 @@ const handleSizeChange = (val: number) => {
 const handleCurrentChange = (val: number) => {
   queryParams.pageNum = val
   getList()
+}
+
+// 处理说明输入
+const handleDescriptionInput = (val: string) => {
+  form.description = val.replace(/^\s+/, '')
 }
 
 onMounted(() => {

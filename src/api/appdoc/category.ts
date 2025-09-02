@@ -64,5 +64,5 @@ export const getMenuInterfaces =  (params: AppCategoryParams): Promise<PageRespo
     pageSize: params.pageSize,
     data: params.simpleName
   }
-  return request.post<PageResponse<MenuInterface>>( '/app/category/menus',vo);
+  return request.post<PageResponse<MenuInterface>>('/app/category/menus', vo);
 };
