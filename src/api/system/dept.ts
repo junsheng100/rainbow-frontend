@@ -1,5 +1,4 @@
 import request from '@/utils/request.ts'
-import type {BaseVo} from "@/types/common.ts"
 
 export interface DeptInfo {
     deptId?: number
@@ -31,6 +30,11 @@ export interface DeptUserInfo {
 export interface DeptQuery {
     deptName?: string
     status?: string // '0'正常 '1'停用
+}
+
+export interface DeptUserQuery {
+    pushType?: string
+    deptIdList?: (string | number)[]
 }
 
 // 获取部门树形列表
@@ -70,11 +74,6 @@ export const getDeptList = (vo: DeptQuery) => {
 
 
 export const getDeptUser = (data: DeptUserQuery) => {
-
-    const data = {
-        pushType : pushType,
-        deptIdList :  deptIdList
-    }
     console.log("#########",JSON.stringify(data));
     return request.post<DeptUserInfo[]>(`/dept/user`, data)
 }
