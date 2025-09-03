@@ -11,6 +11,7 @@
 ## ✨ Core Features
 
 ### 🎨 Multi-Layout System
+
 - **Classic Layout**: Traditional management system layout with top navigation bar and left sidebar menu
 - **Windows Layout**: Complete Windows 10 desktop experience
   - 🖥️ Desktop icon system with customizable backgrounds
@@ -20,6 +21,7 @@
 - **MacBook Layout**: macOS-style layout (in development)
 
 ### 🚀 Technical Advantages
+
 - **Modern Tech Stack**: Vue 3 Composition API + TypeScript + Vite
 - **Component Design**: Rich reusable component library
 - **State Management**: Pinia state management with persistence support
@@ -28,6 +30,7 @@
 - **Permission Control**: Complete permission management system
 
 ### 📱 User Experience
+
 - **Responsive Design**: Support for multiple screen sizes
 - **Performance Optimization**: Route lazy loading, component on-demand loading
 - **Error Handling**: Intelligent error prompts and exception handling
@@ -36,25 +39,30 @@
 ## 🛠️ Technology Stack
 
 ### Core Framework
+
 - **Vue 3.4.15** - Progressive JavaScript framework
 - **TypeScript 5.3.0** - Type-safe JavaScript superset
 - **Vite 5.4.19** - Next-generation frontend build tool
 
 ### UI Framework
+
 - **Element Plus 2.7.3** - Vue 3 component library
 - **Sass** - CSS preprocessor
 - **SVG Icons** - Vector icon system
 
 ### State Management & Routing
+
 - **Pinia 2.1.7** - Vue state management library
 - **Vue Router 4.2.5** - Vue.js official router
 
 ### Development Tools
+
 - **ESLint** - Code quality checking
 - **Prettier** - Code formatting
 - **Vue TSC** - Vue type checking
 
 ### Functional Components
+
 - **CodeMirror 6** - Code editor
 - **ECharts 5.6.0** - Data visualization charts
 - **WangEditor 5.1.23** - Rich text editor
@@ -104,11 +112,13 @@ rainbow-frontend/
 ## 🚀 Quick Start
 
 ### Requirements
+
 - **Node.js**: 18.0.0 or higher
 - **npm**: 8.0.0 or higher
 - **Browser**: Chrome 70+, Firefox 65+, Safari 12+, Edge 79+
 
 ### Install Dependencies
+
 ```bash
 # Clone project
 git clone <repository-url>
@@ -119,6 +129,7 @@ npm install
 ```
 
 ### Development Environment
+
 ```bash
 # Start development server
 npm run dev
@@ -127,6 +138,7 @@ npm run dev
 ```
 
 ### Production Build
+
 ```bash
 # Build production version
 npm run build
@@ -139,6 +151,7 @@ npm run preview
 ```
 
 ### Code Quality
+
 ```bash
 # Type checking
 npm run type-check
@@ -153,6 +166,7 @@ npm run format
 ## 🔧 Configuration
 
 ### Environment Variables
+
 The project supports multi-environment configuration with the following main environment variables:
 
 ```bash
@@ -172,7 +186,9 @@ VITE_DROP_CONSOLE=true
 ```
 
 ### Proxy Configuration
+
 The development environment has configured API proxy support for the following paths:
+
 - `/api/*` → Backend API interfaces
 - `/web/*` → Legacy path compatibility
 - `/resources/*` → Static resource files
@@ -180,61 +196,56 @@ The development environment has configured API proxy support for the following p
 ## 🎯 Core Features
 
 ### Authentication System
+
 - 🔐 JWT Token authentication
 - 🎯 Slider verification code
 - 🔒 Password strength validation
 - 🔄 Automatic Token refresh
 
 ### User Management
+
 - 👤 User information management
 - 🔑 Password modification
 - 🌍 Multi-language support
 - 🎨 Theme switching
 
 ### File Processing
+
 - 📄 PDF document preview
 - 📝 Office document preview
 - 🖼️ Image cropping and preview
 - 📁 File upload and download
 
 ### Development Tools
+
 - 💻 Code editor
 - 📊 Data visualization
 - ✏️ Rich text editing
 - 🕐 Cron job configuration
 
-## 🎨 Layout System
-
-### Windows Layout Features
-- **Desktop Environment**: Customizable backgrounds, desktop icons, right-click menus
-- **Window System**: Drag, resize, minimize/maximize, focus management
-- **Taskbar**: Start button, running programs, system tray
-- **Start Menu**: User information, application categories, power options
-
-### Layout Switching
-1. After logging into the system, find the layout switcher in the top right corner
-2. Select the desired layout mode
-3. The system automatically reloads and applies the new layout
-
 ## 📚 Development Guide
 
 ### Adding New Components
+
 1. Create components in the `src/components/` directory
 2. Follow Vue 3 Composition API specifications
 3. Add TypeScript type definitions
 4. Write component documentation and tests
 
 ### Adding New Pages
+
 1. Create page components in the `src/views/` directory
 2. Add route configuration in `src/router/`
 3. Configure page permissions and menus
 
 ### State Management
+
 - Use Pinia for state management
 - Create Stores in the `src/stores/` directory
 - Support persistent storage
 
 ### Internationalization
+
 - Add language packs in the `src/i18n/` directory
 - Use the `useI18n()` composable function
 - Support dynamic language switching
@@ -252,6 +263,7 @@ npm run test:coverage
 ## 📦 Deployment
 
 ### Docker Deployment
+
 ```dockerfile
 # Build image
 docker build -t rainbow-frontend .
@@ -261,6 +273,7 @@ docker run -p 80:80 rainbow-frontend
 ```
 
 ### Static Deployment
+
 ```bash
 # Build project
 npm run build
