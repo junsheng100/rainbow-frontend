@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           secure: false,
           ws: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),  // 移除前缀 /api
+          // rewrite: (path) => path.replace(/^\/api/, ''),  // 根据项目配置的需要继续调整
           configure: (proxy, _options) => {
             proxy.on('proxyReq', (proxyReq, req, _res) => {
               proxyReq.setHeader('Origin', `http://${env.VITE_DEV_SERVER_HOST || '127.0.0.1'}:${env.VITE_DEV_SERVER_PORT || '8008'}`)
@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => {
           target: env.VITE_DEV_PROXY_TARGET || 'http://127.0.0.1:8080',
           changeOrigin: true,
           secure: false,
-          rewrite: (path) => path.replace(/^\/resources/, ''),  // 移除前缀 /resources
+          rewrite: (path) => path.replace(/^\/resources/, '/api/'),  // 移除前缀 /resources
           configure: (proxy, _options) => {
             proxy.on('proxyReq', (proxyReq, req, _res) => {
               // 设置正确的 Origin 头
