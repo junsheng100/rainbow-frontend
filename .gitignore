@@ -60,3 +60,4 @@ node_modules/**
 /.kiro/
 /.trae/
 /pnpm-lock.yaml
+/.docs/
