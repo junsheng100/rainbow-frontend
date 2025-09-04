@@ -6,19 +6,16 @@
 [![Element Plus](https://img.shields.io/badge/Element%20Plus-2.7.3-409EFF?style=flat-square&logo=element)](https://element-plus.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> 一个基于 Vue 3 + TypeScript + Vite 构建的现代化企业级管理系统前端框架，支持多种布局模式，提供丰富的组件库和优秀的开发体验。
+> 一个基于 Vue 3 + TypeScript + Vite 构建的现代化企业级管理系统前端框架，提供丰富的组件库和优秀的开发体验。
 
 ## ✨ 核心特性
 
-### 🎨 多布局系统
+### 🎨 系统特性
 
-- **经典布局**: 传统管理系统布局，包含顶部导航栏和左侧菜单
-- **Windows 布局**: 完整的 Windows 10 桌面体验
-  - 🖥️ 桌面图标系统与自定义背景
-  - 🪟 完整的窗口管理系统（拖拽、调整大小、最小化/最大化）
-  - 📱 任务栏与开始菜单
-  - 🔧 系统托盘与通知
-- **MacBook 布局**: macOS 风格布局（开发中）
+- **现代化界面**: 基于 Element Plus 的现代化管理系统界面
+- **响应式设计**: 支持多种屏幕尺寸和设备
+- **组件化架构**: 高度模块化的组件设计
+- **主题系统**: 支持主题切换和自定义
 
 ### 🚀 技术优势
 
@@ -303,6 +300,8 @@ npm run build
 
 ## 📞 联系我们
 
+- **QQ**: 304299340
+- **E-Mail**: junsheng100@foxmail.com
 - **项目地址**: [GitHub Repository]
 - **问题反馈**: [Issues]
 - **功能建议**: [Discussions]

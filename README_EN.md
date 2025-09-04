@@ -6,19 +6,16 @@
 [![Element Plus](https://img.shields.io/badge/Element%20Plus-2.7.3-409EFF?style=flat-square&logo=element)](https://element-plus.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> A modern enterprise-level management system frontend framework built with Vue 3 + TypeScript + Vite, supporting multiple layout modes, providing rich component libraries and excellent development experience.
+> A modern enterprise-level management system frontend framework built with Vue 3 + TypeScript + Vite, providing rich component libraries and excellent development experience.
 
 ## ✨ Core Features
 
-### 🎨 Multi-Layout System
+### 🎨 System Features
 
-- **Classic Layout**: Traditional management system layout with top navigation bar and left sidebar menu
-- **Windows Layout**: Complete Windows 10 desktop experience
-  - 🖥️ Desktop icon system with customizable backgrounds
-  - 🪟 Complete window management system (drag, resize, minimize/maximize)
-  - 📱 Taskbar and start menu
-  - 🔧 System tray and notifications
-- **MacBook Layout**: macOS-style layout (in development)
+- **Modern Interface**: Modern management system interface based on Element Plus
+- **Responsive Design**: Support for multiple screen sizes and devices
+- **Component Architecture**: Highly modular component design
+- **Theme System**: Theme switching and customization support
 
 ### 🚀 Technical Advantages
 
@@ -302,6 +299,8 @@ This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LI
 
 ## 📞 Contact Us
 
+- **QQ**: 304299340
+- **E-Mail**: junsheng100@foxmail.com
 - **Project Repository**: [GitHub Repository]
 - **Issue Reports**: [Issues]
 - **Feature Suggestions**: [Discussions]
