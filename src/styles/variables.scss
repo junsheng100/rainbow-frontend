@@ -1,0 +1,321 @@
+// CSS 变量系统 - Rainbow View 主题系统
+// 这些变量将被 JavaScript 动态修改以实现主题切换
+
+:root {
+  // ===== 主题色彩 =====
+  --primary-color: #409EFF;
+  --success-color: #67C23A;
+  --warning-color: #E6A23C;
+  --danger-color: #F56C6C;
+  --info-color: #909399;
+  
+  // 扩展色彩
+  --primary-light: #79bbff;
+  --primary-dark: #337ecc;
+  --success-light: #85ce61;
+  --success-dark: #529b2e;
+  --warning-light: #ebb563;
+  --warning-dark: #b88230;
+  --danger-light: #f78989;
+  --danger-dark: #c45656;
+  --info-light: #a6a9ad;
+  --info-dark: #73767a;
+  
+  // ===== 布局变量 =====
+  --menu-width: 240px;
+  --menu-collapsed-width: 64px;
+  --header-height: 60px;
+  --tabs-height: 40px;
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 64px;
+  
+  // 菜单位置
+  --menu-position: left; // left, right, top
+  --menu-collapsed: false;
+  
+  // ===== 样式变量 =====
+  --border-radius: 6px;
+  --border-radius-small: 4px;
+  --border-radius-large: 8px;
+  --border-radius-round: 50%;
+  
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --box-shadow-light: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --box-shadow-dark: 0 4px 16px rgba(0, 0, 0, 0.2);
+  
+  --transition: all 0.3s ease;
+  --transition-fast: all 0.15s ease;
+  --transition-slow: all 0.5s ease;
+  
+  // ===== 字体变量 =====
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-family-monospace: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-xxl: 24px;
+  
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  
+  // ===== 头部导航变量 =====
+  --header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --header-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --header-text-color: #ffffff;
+  
+  // ===== 页面标签变量 =====
+  --tabs-bg: #ffffff;
+  --tabs-border-color: #e4e7ed;
+  --tabs-active-color: #409eff;
+  --tabs-hover-bg: #f5f7fa;
+  
+  // ===== 背景变量 =====
+  --bg-type: color; // color, image, animation
+  --bg-color: #f8f9fa;
+  --bg-image: '';
+  --bg-size: cover;
+  --bg-position: center;
+  --bg-repeat: no-repeat;
+  --bg-attachment: fixed;
+  --bg-opacity: 1;
+  
+  // ===== 菜单变量 =====
+  --menu-bg-color: #2c3e50;
+  --menu-text-color: #bdc3c7;
+  --menu-active-color: #3498db;
+  --menu-hover-bg: #34495e;
+  --menu-border-radius: 6px;
+  --menu-transition: all 0.3s ease;
+  
+  // ===== 内容区域变量 =====
+  --content-bg: #ffffff;
+  --content-border: #e4e7ed;
+  --content-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+  // ===== 卡片变量 =====
+  --card-bg: #ffffff;
+  --card-border: #e4e7ed;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --card-radius: 6px;
+  
+  // ===== 按钮变量 =====
+  --btn-radius: 6px;
+  --btn-padding-x: 16px;
+  --btn-padding-y: 8px;
+  --btn-font-size: 14px;
+  
+  // ===== 输入框变量 =====
+  --input-radius: 6px;
+  --input-border: #dcdfe6;
+  --input-focus-border: #409eff;
+  --input-bg: #ffffff;
+  
+  // ===== 表格变量 =====
+  --table-border: #ebeef5;
+  --table-header-bg: #fafafa;
+  --table-row-hover-bg: #f5f7fa;
+  --table-stripe-bg: #fafafa;
+  
+  // ===== 分页变量 =====
+  --pagination-bg: #ffffff;
+  --pagination-border: #e4e7ed;
+  --pagination-active-bg: #409eff;
+  --pagination-active-color: #ffffff;
+  
+  // ===== 加载状态变量 =====
+  --loading-color: #409eff;
+  --loading-size: 32px;
+  --loading-thickness: 3px;
+  
+  // ===== 滚动条变量 =====
+  --scrollbar-width: 8px;
+  --scrollbar-track: #f1f1f1;
+  --scrollbar-thumb: #c1c1c1;
+  --scrollbar-thumb-hover: #a8a8a8;
+  
+  // ===== 动画变量 =====
+  --animation-duration: 0.3s;
+  --animation-timing: ease;
+  --animation-delay: 0s;
+  
+  // ===== 响应式断点 =====
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-xxl: 1400px;
+}
+
+// ===== 深色模式变量 =====
+[data-theme="dark"] {
+  // 基础色彩调整
+  --primary-color: #409EFF;
+  --success-color: #67C23A;
+  --warning-color: #E6A23C;
+  --danger-color: #F56C6C;
+  --info-color: #909399;
+  
+  // 背景和文字
+  --bg-color: #1F2937;
+  --content-bg: #374151;
+  --card-bg: #374151;
+  
+  --text-color: #F9FAFB;
+  --text-color-secondary: #D1D5DB;
+  --text-color-disabled: #6B7280;
+  
+  // 边框和分割线
+  --border-color: #4B5563;
+  --content-border: #4B5563;
+  --card-border: #4B5563;
+  --input-border: #4B5563;
+  --table-border: #4B5563;
+  
+  // 菜单
+  --menu-bg-color: #111827;
+  --menu-text-color: #D1D5DB;
+  --menu-hover-bg: #1F2937;
+  
+  // 表格
+  --table-header-bg: #1F2937;
+  --table-row-hover-bg: #374151;
+  --table-stripe-bg: #1F2937;
+  
+  // 滚动条
+  --scrollbar-track: #1F2937;
+  --scrollbar-thumb: #4B5563;
+  --scrollbar-thumb-hover: #6B7280;
+  
+  // 阴影
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --box-shadow-light: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --box-shadow-dark: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+// ===== 菜单位置样式 =====
+[data-menu-position="right"] {
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 64px;
+}
+
+[data-menu-position="top"] {
+  --header-height: 80px;
+  --sidebar-width: 100%;
+  --sidebar-collapsed-width: 100%;
+}
+
+// ===== 菜单折叠状态 =====
+[data-menu-collapsed="true"] {
+  --sidebar-width: var(--sidebar-collapsed-width);
+}
+
+// ===== 响应式混入 =====
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == xs {
+    @media (min-width: var(--breakpoint-xs)) { @content; }
+  } @else if $breakpoint == sm {
+    @media (min-width: var(--breakpoint-sm)) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: var(--breakpoint-md)) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: var(--breakpoint-lg)) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: var(--breakpoint-xl)) { @content; }
+  } @else if $breakpoint == xxl {
+    @media (min-width: var(--breakpoint-xxl)) { @content; }
+  }
+}
+
+// ===== 工具类 =====
+.text-primary { color: var(--primary-color) !important; }
+.text-success { color: var(--success-color) !important; }
+.text-warning { color: var(--warning-color) !important; }
+.text-danger { color: var(--danger-color) !important; }
+.text-info { color: var(--info-color) !important; }
+
+.bg-primary { background-color: var(--primary-color) !important; }
+.bg-success { background-color: var(--success-color) !important; }
+.bg-warning { background-color: var(--warning-color) !important; }
+.bg-danger { background-color: var(--danger-color) !important; }
+.bg-info { background-color: var(--info-color) !important; }
+
+.border-primary { border-color: var(--primary-color) !important; }
+.border-success { border-color: var(--success-color) !important; }
+.border-warning { border-color: var(--warning-color) !important; }
+.border-danger { border-color: var(--danger-color) !important; }
+.border-info { border-color: var(--info-color) !important; }
+
+// ===== 动画类 =====
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--animation-duration) var(--animation-timing);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform var(--animation-duration) var(--animation-timing);
+}
+
+.slide-enter-from {
+  transform: translateX(-100%);
+}
+
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+// ===== 滚动条样式 =====
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: calc(var(--scrollbar-width) / 2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: calc(var(--scrollbar-width) / 2);
+  
+  &:hover {
+    background: var(--scrollbar-thumb-hover);
+  }
+}
+
+// ===== 打印样式 =====
+@media print {
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --border-color: #000000;
+  }
+  
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
