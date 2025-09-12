@@ -51,7 +51,7 @@ export function getMenuType(menuType: string) {
 }
 // 获取菜单类型
 export function getChildList(menuId: number) {
-  return request.get<MenuItem[]>( `/menu/child//${menuId}` );
+  return request.get<MenuItem[]>( `/menu/child/${menuId}` );
 }
 // 获取单个菜单详情
 export function getMenuDetail(id: number) {
