@@ -50,6 +50,8 @@
       <el-table-column label="字典排序" prop="dictSort" width="100" align="center"/>
       <el-table-column label="数据标签" prop="dictLabel" min-width="100" show-overflow-tooltip>
       </el-table-column>
+      <el-table-column label="数据名称" prop="dictName" min-width="100" show-overflow-tooltip>
+      </el-table-column>
       <el-table-column label="字典键值" prop="dictValue" show-overflow-tooltip/>
       <el-table-column label="启用" align="center" width="100">
         <template #default="{ row }">
@@ -110,6 +112,7 @@ import {ref, reactive, watch} from 'vue'
 import {ElMessage, ElMessageBox} from 'element-plus'
 import {useDictStore} from '@/stores/dict'
 import type {SysDictData, SysDictDataParams} from '@/api/dict/data'
+// @ts-ignore
 import DictDataForm from './DictDataForm.vue'
 
 const dictStore = useDictStore()

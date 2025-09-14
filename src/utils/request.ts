@@ -21,7 +21,7 @@ let lastFailedUrl = ''
 const MAX_FAILURE_COUNT = 3
 
 // 获取环境变量中的 API 基础 URL
-const BASE_API = import.meta.env.VITE_APP_BASE_API || '/web'
+const BASE_API = import.meta.env.VITE_APP_BASE_API || '/api'
 
 // 创建不需要 token 的 axios 实例
 export const publicService: AxiosInstance = axios.create({
@@ -197,27 +197,94 @@ const getErrorMessage = (error: any): string => {
 // 请求拦截器
 service.interceptors.request.use(
   async (config) => {
-    // 使用tokenManager获取有效token
+    console.log('🚀 请求拦截器开始处理:', {
+      url: config.url,
+      method: config.method,
+      timestamp: new Date().toISOString()
+    })
+    
+    // 强制添加一个测试 header 来验证拦截器是否工作
+    config.headers['X-Test-Interceptor'] = 'working'
+    
+    // 简化逻辑：直接从 cookie 获取 token
+    const cookieToken = TokenCookie.getAccessToken()
+    console.log('🍪 Cookie 中的 token:', {
+      hasToken: !!cookieToken,
+      tokenLength: cookieToken?.length || 0,
+      tokenPreview: cookieToken ? cookieToken.substring(0, 20) + '...' : 'none',
+      rawCookie: document.cookie
+    })
+    
+    // 对于非登录和刷新请求，直接添加 token
     if (!config.url?.includes('/auth/refresh') && !config.url?.includes('/auth/login')) {
-      try {
-        const token = await tokenManager.getValidToken()
-        if (token) {
-          config.headers['Authorization'] = `Bearer ${token}`
+      // 尝试多种方式获取 token
+      let token = cookieToken
+      
+      // 如果没有 token，尝试从原始 cookie 字符串中解析
+      if (!token) {
+        const cookies = document.cookie.split(';')
+        const tokenCookie = cookies.find(c => c.trim().startsWith('token='))
+        if (tokenCookie) {
+          token = decodeURIComponent(tokenCookie.split('=')[1])
+          console.log('🔧 从原始 cookie 字符串中找到 token:', token ? 'exists' : 'missing')
         }
-      } catch (error) {
-        console.error('Token validation failed:', error)
       }
-    } else if (config.url?.includes('/auth/login')) {
-      // 登录请求不需要检查和刷新token
-      const token = TokenCookie.getAccessToken()
+      
       if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`
+        // 获取动态的 tokenType，默认为 Bearer
+        const tokenType = TokenCookie.getTokenType() || 'Bearer'
+        const authHeader = `${tokenType} ${token}`
+        config.headers['Authorization'] = authHeader
+        console.log('✅ 请求拦截器: 已添加 Authorization header', {
+          url: config.url,
+          method: config.method,
+          hasToken: !!token,
+          tokenLength: token.length,
+          tokenPreview: token.substring(0, 30) + '...',
+          tokenType: tokenType,
+          authHeaderPreview: authHeader.substring(0, 40) + '...',
+          authHeaderLength: authHeader.length
+        })
+      } else {
+        console.warn('⚠️ 请求拦截器: 未找到 token', {
+          url: config.url,
+          method: config.method,
+          accessToken: TokenCookie.getAccessToken() ? 'exists' : 'missing',
+          refreshToken: TokenCookie.getRefreshToken() ? 'exists' : 'missing',
+          allCookies: document.cookie.split(';').map(c => c.trim().split('=')[0]),
+          rawCookieLength: document.cookie.length,
+          rawCookie: document.cookie,
+          cookieDetails: document.cookie.split(';').map(c => {
+            const [name, value] = c.trim().split('=');
+            return {
+              name: name,
+              hasValue: !!value,
+              valueLength: value?.length || 0,
+              valuePreview: value ? value.substring(0, 20) + '...' : 'none'
+            };
+          })
+        })
       }
     }
+    
+    // 调试: 打印最终的请求配置
+    console.log('🔍 最终请求配置:', {
+      url: config.url,
+      method: config.method,
+      headers: {
+        Authorization: config.headers['Authorization'] ? 'Bearer ***' : 'missing',
+        'X-Test-Interceptor': config.headers['X-Test-Interceptor'] || 'missing',
+        'Content-Type': config.headers['Content-Type']
+      },
+      allHeaders: Object.keys(config.headers),
+      hasAuthHeader: !!config.headers['Authorization'],
+      authHeaderLength: typeof config.headers['Authorization'] === 'string' ? config.headers['Authorization'].length : 0
+    })
+    
     return config
   },
   (error) => {
-    // 不在这里显示错误消息，交给全局处理
+    console.error('❌ 请求拦截器错误:', error)
     return Promise.reject(error)
   }
 )
@@ -340,7 +407,8 @@ if (error.response?.status === 401 && error.config && !error.config._retry) {
               // 使用新的token重新发送请求
               const token = await tokenManager.getValidToken()
               if (token) {
-                error.config.headers['Authorization'] = `Bearer ${token}`
+                const tokenType = TokenCookie.getTokenType() || 'Bearer'
+                error.config.headers['Authorization'] = `${tokenType} ${token}`
               }
 
               // 重新发送请求
@@ -408,3 +476,4 @@ const request = {
 }
 
 export default request
+

@@ -11,7 +11,6 @@ const componentMap: Record<string, () => Promise<Component>> = {
 
 // 预加载所有视图组件
 const modules = import.meta.glob('../../views/**/*.vue')
-// console.log('Preloaded modules:', Object.keys(modules))
 
 // 动态加载组件
 const loadComponent = (component: string): () => Promise<Component> => {
@@ -19,7 +18,6 @@ const loadComponent = (component: string): () => Promise<Component> => {
 
   // 处理特殊组件
   if (component === 'Layout' || component === 'ParentView') {
-    // console.log('Using special component:', component)
     return componentMap[component]
   }
 
@@ -110,8 +108,8 @@ export const usePermissionStore = defineStore('permission', {
 
         // 开发环境下打印API返回数据
         if (import.meta.env.DEV) {
-         // console.log('API返回的路由数据:', JSON.stringify(routes, null, 2))
-        }
+
+         }
 
         // 校验并转换路由数据
         if (!Array.isArray(routes)) {

@@ -19,6 +19,13 @@
           maxlength="100"
         />
       </el-form-item>
+      <el-form-item label="数据名称" prop="dictName">
+        <el-input
+          v-model="form.dictName"
+          placeholder="请输入数据名称"
+          maxlength="100"
+        />
+      </el-form-item>
       <el-form-item label="字典键值" prop="dictValue">
         <el-input
           v-model="form.dictValue"
@@ -83,6 +90,7 @@ const dialogVisible = ref(false)
 // 默认表单数据
 const getDefaultFormData = (): SysDictData => ({
   dictLabel: '',
+  dictName: '',
   dictValue: '',
   dictType: dictStore.currentDictType!,
   dictSort: 1,
@@ -98,6 +106,10 @@ const form = ref<SysDictData>(getDefaultFormData())
 const rules = {
   dictLabel: [
     { required: true, message: '请输入字典标签', trigger: 'blur' },
+    { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
+  ],
+  dictName: [
+    { required: true, message: '请输入数据名称', trigger: 'blur' },
     { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
   ],
   dictValue: [
@@ -164,7 +176,6 @@ const handleSubmit = async () => {
 
   try {
     await formRef.value.validate()
-    console.log("提交的字典数据:", JSON.stringify(form.value, null, 2))
 
     if (props.formData?.dictCode) {
       await dictStore.updateDictData({
@@ -187,7 +198,7 @@ const handleSubmit = async () => {
       response: err.response,
       data: err.response?.data
     })
-    
+
     // 显示具体的错误信息
     if (err.response?.data?.msg) {
       ElMessage.error(err.response.data.msg)

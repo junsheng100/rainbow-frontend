@@ -285,7 +285,6 @@ const loadUsersBydeptIds = async (deptIds: number[]) => {
 
   usersLoading.value = true
   try {
-    console.log('#### 部门ID用户数据:',deptIds)
     // 修改: 确保传递给后端的参数类型正确，添加类型检查
     const deptIdsArray = Array.isArray(deptIds) ? deptIds : [deptIds];
     // 确保所有ID都是数字类型
@@ -295,7 +294,7 @@ const loadUsersBydeptIds = async (deptIds: number[]) => {
       }
       return id;
     }).filter(id => !isNaN(id)); // 过滤掉无效的数字
-    
+
     const res = await getDeptUserList(form.pushType, numericDeptIds)
     // console.log('部门用户数据:', JSON.stringify(res))
     userOptions.value = res || []
@@ -344,7 +343,7 @@ const searchUsers = async (query: string) => {
           }
           return id;
         }).filter(id => !isNaN(id)); // 过滤掉无效的数字
-        
+
         const res = await getDeptUserList(form.pushType, numericDeptIds)
         // 过滤包含查询关键词的用户
         userOptions.value = (res || []).filter((user: DeptUserInfo) =>
@@ -383,15 +382,15 @@ const submitForm = () => {
   formRef.value?.validate((valid: boolean) => {
     if (valid) {
       // 确保 deptIds 是数字数组
-      const numericDeptIds = Array.isArray(form.deptIds) 
+      const numericDeptIds = Array.isArray(form.deptIds)
         ? form.deptIds.map((id: any) => Number(id)).filter((id: number) => !isNaN(id))
         : []
-      
+
       // 确保 userIds 是字符串数组
       const stringUserIds = Array.isArray(form.userIds)
         ? form.userIds.map((id: any) => String(id))
         : []
-      
+
       // 创建提交数据对象，使用PushSubmitData接口
       const formData: PushSubmitData = {
         ...form,

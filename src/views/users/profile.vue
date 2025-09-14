@@ -11,6 +11,10 @@
                   <el-icon><Edit /></el-icon>
                   编辑
                 </el-button>
+                <el-button v-if="!isEditing" type="success" @click="testAuthHeader" style="margin-left: 10px;">
+                  <el-icon><Connection /></el-icon>
+                  测试认证
+                </el-button>
               </div>
             </template>
 
@@ -112,17 +116,19 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import { Edit, User } from '@element-plus/icons-vue'
-import { getUserProfile, updateUser } from '@/api/users/user.ts'
+import { Edit, Connection } from '@element-plus/icons-vue'
+import { getUserProfile, updateUser } from '@/api/users/user'
 import type { UserInfo } from '@/types/user'
 import { useUserStore } from '@/stores/user'
 import { getResourceUrl } from "@/config"
-import { getToken } from "@/utils/auth.ts"
+import { getToken } from "@/utils/auth"
+import { TokenCookie } from '@/utils/cookies'
 import AvatarCropper from './avatarCropper.vue'
 
 // 响应式数据
 const isEditing = ref(false)
 const submitLoading = ref(false)
+const avatarTimestamp = ref(Date.now())
 
 // 表单引用
 const formRef = ref<FormInstance>()
@@ -157,7 +163,7 @@ const formRules = reactive<FormRules>({
 })
 
 // 上传相关配置
-const uploadUrl = '/web/api/user/avatar/upload'
+const uploadUrl = '/api/user/avatar/upload'
 
 const uploadHeaders = computed(() => {
   const token = getToken()
@@ -165,14 +171,16 @@ const uploadHeaders = computed(() => {
     ElMessage.error('未登录或登录已过期，请重新登录')
     return {}
   }
+  const tokenType = TokenCookie.getTokenType() || 'Bearer'
   return {
-    Authorization: `Bearer ${token}`,
+    Authorization: `${tokenType} ${token}`,
     'X-Requested-With': 'XMLHttpRequest'
   }
 })
 
-const avatarUrl = computed( ()=>{
-    return getResourceUrl(userForm.avatar!)+"?timestamp="+Date.now();
+const avatarUrl = computed(() => {
+  if (!userForm.avatar) return ''
+  return getResourceUrl(userForm.avatar) + "?timestamp=" + avatarTimestamp.value
 })
 
 // 获取用户信息
@@ -225,10 +233,28 @@ const handleSubmit = async () => {
 
 
 // 头像裁剪成功
-const handleCropSuccess = (avatarUrl: string) => {
-  userForm.avatar = avatarUrl
-  userStore.userInfo.avatar = avatarUrl
-
+const handleCropSuccess = async (avatarUrl: string) => {
+  try {
+    // 更新表单中的头像
+    userForm.avatar = avatarUrl
+    
+    // 直接更新userStore中的头像信息，确保立即生效
+    userStore.userInfo.avatar = avatarUrl
+    
+    // 更新时间戳强制刷新头像显示
+    avatarTimestamp.value = Date.now()
+    
+    // 使用updateUserProfile方法更新用户头像信息到服务器
+    await userStore.updateUserProfile({ avatar: avatarUrl })
+    
+    // 重新获取用户信息以确保数据同步
+    await userStore.getUserInfo()
+    
+    ElMessage.success('头像更新成功')
+  } catch (error) {
+    console.error('头像更新失败:', error)
+    ElMessage.error('头像更新失败，请重试')
+  }
 }
 
 // 头像裁剪失败
@@ -240,6 +266,25 @@ const handleCropError = (error: any) => {
 // 取消裁剪
 const handleCropCancel = () => {
   // 可以添加一些取消时的处理逻辑
+}
+
+// 测试认证 header
+const testAuthHeader = async () => {
+  try {
+    console.log('🧪 开始测试 Authorization header...')
+    
+    // 先检查 cookie 中的 token
+    const token = document.cookie.split(';').find(c => c.trim().startsWith('token='))
+    console.log('🍪 当前 Cookie 中的 token:', token ? 'exists' : 'missing')
+    
+    // 测试获取用户信息 API
+    const response = await getUserProfile()
+    console.log('✅ 测试成功:', response)
+    ElMessage.success('认证测试成功！请查看控制台日志')
+  } catch (error) {
+    console.error('❌ 测试失败:', error)
+    ElMessage.error('认证测试失败，请查看控制台日志')
+  }
 }
 
 // 生命周期钩子

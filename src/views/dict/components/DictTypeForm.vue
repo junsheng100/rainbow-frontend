@@ -163,8 +163,7 @@ const handleSubmit = async () => {
 
   try {
     await formRef.value.validate()
-    console.log("提交的表单数据:", JSON.stringify(form.value, null, 2))
-    
+
     if (props.formData?.dictId) {
       await dictStore.updateDictType({
         ...form.value,
@@ -186,7 +185,7 @@ const handleSubmit = async () => {
       response: err.response,
       data: err.response?.data
     })
-    
+
     // 显示具体的错误信息
     if (err.response?.data?.msg) {
       ElMessage.error(err.response.data.msg)

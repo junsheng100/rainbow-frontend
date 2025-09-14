@@ -12,7 +12,7 @@
       <div class="loading-text">正在加载头像...</div>
     </div>
 
-    <div class="upload-container" v-else-if="!imageUrl">
+    <div class="upload-container">
       <el-upload
         class="upload-button"
         :action="action"

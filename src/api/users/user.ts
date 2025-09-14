@@ -2,6 +2,7 @@ import request from '@/utils/request.ts'
 import {BaseVo,PageResponse} from "@/types/common.ts"
 import {ChangePasswordForm} from "@/types/user.ts";
 import {getToken} from "@/utils/auth.ts";
+import { TokenCookie } from '@/utils/cookies'
 
 
 // 用户信息接口
@@ -114,7 +115,7 @@ export const uploadUserAvatar = (formData: FormData) => {
     return request.post<{url: string}>('/user/avatar/upload', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + getToken()
+            'Authorization': (TokenCookie.getTokenType() || 'Bearer') + ' ' + getToken()
         }
     })
 }

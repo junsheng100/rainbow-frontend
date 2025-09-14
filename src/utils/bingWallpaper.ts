@@ -47,11 +47,10 @@ class BingWallpaperService {
       // 检查缓存
       const cachedData = this.getCachedData()
       if (cachedData && cachedData.length > 0) {
-        // console.log('使用缓存的Bing壁纸数据')
+
         return cachedData
       }
 
-      // console.log('获取新的Bing壁纸数据...')
       const response = await fetch(this.API_URL)
 
       if (!response.ok) {
@@ -63,7 +62,6 @@ class BingWallpaperService {
       if (data.images && data.images.length > 0) {
         // 缓存数据
         this.setCachedData(data.images)
-        // console.log(`成功获取${data.images.length}张Bing壁纸`)
         return data.images
       } else {
         throw new Error('没有获取到壁纸数据')
@@ -162,7 +160,6 @@ class BingWallpaperService {
       // 启动定时器，每分钟切换一次
       this.startTimer()
 
-      console.log(`Bing壁纸轮播已启动，共${this.images.length}张图片`)
     } catch (error) {
       console.error('初始化轮播失败:', error)
     }
@@ -190,9 +187,6 @@ class BingWallpaperService {
 
     const currentImage = this.images[this.currentIndex]
     const imageUrl = this.getFullImageUrl(currentImage)
-
-    // console.log(`显示图片: ${currentImage.title} (${this.currentIndex + 1}/${this.images.length})`)
-
     // 调用回调函数
     if (this.onImageChangeCallback) {
       this.onImageChangeCallback(imageUrl, currentImage)
@@ -262,7 +256,6 @@ class BingWallpaperService {
   async preloadAllImages(): Promise<void> {
     if (this.images.length === 0) return
 
-    // console.log('开始预加载图片...')
 
     const preloadPromises = this.images.map(async (image) => {
       try {
@@ -275,7 +268,6 @@ class BingWallpaperService {
     })
 
     await Promise.allSettled(preloadPromises)
-    // console.log('图片预加载完成')
   }
 
   /**

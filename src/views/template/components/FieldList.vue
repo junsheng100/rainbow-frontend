@@ -271,7 +271,7 @@ const getFieldTypeOptions = async () => {
   fieldTypeLoading.value = true
   try {
     const response = await getDataTypeById(props.currentEntity.id)
-    console.log('字段类型API返回数据:', response) // 添加调试日志
+
 
     if (response && Array.isArray(response)) {
       // 清空原有选项，避免重复添加

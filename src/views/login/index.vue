@@ -500,8 +500,6 @@ const handleLogin = async () => {
 
 // 生命周期
 onMounted(() => {
-  // console.log('=== 组件挂载 ===')
-  // console.log('systemWallpaperService 实例:', systemWallpaperService)
   // 初始化壁纸
   initWallpaper()
   initSavedCredentials()
@@ -509,7 +507,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   // console.log('=== 组件卸载 ===')
-  // console.log('停止壁纸服务')
   systemWallpaperService.stop()
 })
 

@@ -73,13 +73,13 @@
                 <div class="card-header">
                   <span class="chart-title">区域分布</span>
                   <div class="chart-legends" v-if="loginCityData.length > 0">
-                    <span 
-                      v-for="(city, index) in loginCityData.slice(0, 3)" 
+                    <span
+                      v-for="(city, index) in loginCityData.slice(0, 3)"
                       :key="city.city"
                       class="legend-item"
                     >
-                      <span 
-                        class="legend-dot" 
+                      <span
+                        class="legend-dot"
                         :style="{ backgroundColor: getCityChartColor(index) }"
                       ></span>
                       {{ city.city }}
@@ -100,9 +100,9 @@
                 <div class="card-header">
                   <span class="chart-title">数据分布</span>
                   <div class="chart-controls">
-                    <el-select 
-                      v-model="pieChartLimit" 
-                      placeholder="选择数量" 
+                    <el-select
+                      v-model="pieChartLimit"
+                      placeholder="选择数量"
                       style="width: 120px;"
                       @change="handlePieChartLimitChange"
                       filterable
@@ -147,34 +147,34 @@
                       :disabled-date="disabledDate"
                       @change="handleDateRangeChange"
                     />
-                    <el-button 
-                      size="small" 
-                      type="info" 
+                    <el-button
+                      size="small"
+                      type="info"
                       plain
                       @click="resetDateRange"
                       title="重置为最近30天"
                     >
                       重置
                     </el-button>
-                    <el-button 
-                      size="small" 
-                      :type="currentStatType === 'day' ? 'primary' : ''" 
+                    <el-button
+                      size="small"
+                      :type="currentStatType === 'day' ? 'primary' : ''"
                       plain
                       @click="handleStatTypeChange('day')"
                     >
                       日
                     </el-button>
-                    <el-button 
-                      size="small" 
-                      :type="currentStatType === 'week' ? 'primary' : ''" 
+                    <el-button
+                      size="small"
+                      :type="currentStatType === 'week' ? 'primary' : ''"
                       plain
                       @click="handleStatTypeChange('week')"
                     >
                       周
                     </el-button>
-                    <el-button 
-                      size="small" 
-                      :type="currentStatType === 'month' ? 'primary' : ''" 
+                    <el-button
+                      size="small"
+                      :type="currentStatType === 'month' ? 'primary' : ''"
                       plain
                       @click="handleStatTypeChange('month')"
                     >
@@ -269,14 +269,14 @@
             <el-tag type="primary" size="large">{{ selectedPieData.total }} 次</el-tag>
           </el-descriptions-item>
         </el-descriptions>
-        
+
         <div class="pie-detail-chart" style="margin-top: 20px;">
           <h4>使用频率分布</h4>
           <div style="height: 300px;" ref="detailChartRef"></div>
         </div>
       </div>
     </el-dialog>
-    
+
     <!-- 城市详情弹窗 -->
     <el-dialog
       v-model="cityDetailDialogVisible"
@@ -308,7 +308,7 @@
             </div>
           </el-descriptions-item>
         </el-descriptions>
-        
+
         <!-- 城市详情图表 -->
         <div ref="cityDetailChartRef" class="city-detail-chart"></div>
       </div>
@@ -378,7 +378,7 @@ const getDefaultDateRange = (): [string, string] => {
   const endDate = new Date()
   const startDate = new Date()
   startDate.setDate(endDate.getDate() - 30)
-  
+
   return [
     startDate.toISOString().split('T')[0], // yyyy-MM-dd
     endDate.toISOString().split('T')[0]    // yyyy-MM-dd
@@ -431,11 +431,6 @@ const handleDialogClosed = async () => {
       refreshUnreadCount()
     ])
 
-    // // 添加调试日志验证
-    // console.log('弹窗关闭后更新完成:', {
-    //   messageCount: messageCount.value,
-    //   timestamp: new Date().toISOString()
-    // })
   } catch (error) {
     console.error('更新统计数据失败:', error)
     // 即使出错也尝试重新获取消息计数
@@ -500,7 +495,7 @@ const fetchTopOperLogData = async () => {
 const fetchUserStatData = async () => {
   try {
     let startDateStr: string, endDateStr: string
-    
+
     // 如果用户选择了日期范围，使用选择的日期；否则使用默认的最近30天
     if (dateRange.value && dateRange.value.length === 2) {
       startDateStr = dateRange.value[0]
@@ -511,13 +506,13 @@ const fetchUserStatData = async () => {
       startDateStr = defaultRange[0]
       endDateStr = defaultRange[1]
     }
-    
+
     const params = {
       start: startDateStr,
       end: endDateStr,
       type: currentStatType.value
     }
-    
+
     const data = await getUserStatData(params)
     userStatData.value = data
     await initLineChart()
@@ -552,10 +547,10 @@ const initPieChart = async () => {
       if (pieChart.value) {
         pieChart.value.dispose()
       }
-      
+
       // 创建新的图表实例
       pieChart.value = echarts.init(pieChartRef.value)
-      
+
       // 显示无数据提示
       const option = {
         graphic: {
@@ -570,15 +565,15 @@ const initPieChart = async () => {
           }
         }
       }
-      
+
       pieChart.value.setOption(option)
     }
     return
   }
-  
+
   // 等待DOM更新
   await nextTick()
-  
+
   if (!pieChartRef.value) {
     return
   }
@@ -655,7 +650,7 @@ const initPieChart = async () => {
 
   // 设置配置项并渲染
   pieChart.value.setOption(option)
-  
+
   // 添加点击事件监听
   pieChart.value.on('click', handlePieChartClick)
 }
@@ -670,10 +665,10 @@ const initLineChart = async () => {
       if (lineChart.value) {
         lineChart.value.dispose()
       }
-      
+
       // 创建新的图表实例
       lineChart.value = echarts.init(lineChartRef.value)
-      
+
       // 显示无数据提示
       const option = {
         graphic: {
@@ -688,15 +683,15 @@ const initLineChart = async () => {
           }
         }
       }
-      
+
       lineChart.value.setOption(option)
     }
     return
   }
-  
+
   // 等待DOM更新
   await nextTick()
-  
+
   if (!lineChartRef.value) {
     return
   }
@@ -727,7 +722,7 @@ const initLineChart = async () => {
       formatter: (params: any) => {
         let result = `<div style="padding: 8px;">
           <div style="font-weight: bold; margin-bottom: 8px;">${params[0].axisValue}</div>`
-        
+
         params.forEach((param: any) => {
           const color = param.color
           const name = param.seriesName
@@ -737,7 +732,7 @@ const initLineChart = async () => {
             <span>${name}: ${value}</span>
           </div>`
         })
-        
+
         result += '</div>'
         return result
       },
@@ -862,17 +857,17 @@ const handleCityChartClick = (_params: any) => {
 // 初始化城市详情图表
 const initCityDetailChart = () => {
   if (!cityDetailChartRef.value || !selectedCityData.value.length) return
-  
+
   if (cityDetailChart.value) {
     cityDetailChart.value.dispose()
   }
-  
+
   cityDetailChart.value = echarts.init(cityDetailChartRef.value)
-  
+
   // 准备数据 - 显示所有城市
   const cityNames = selectedCityData.value.map(item => item.city)
   const cityTotals = selectedCityData.value.map(item => item.total)
-  
+
   const option = {
     tooltip: {
       trigger: 'axis',
@@ -934,7 +929,7 @@ const initCityDetailChart = () => {
       }
     ]
   }
-  
+
   cityDetailChart.value.setOption(option)
 }
 
@@ -948,10 +943,10 @@ const initCityChart = async () => {
       if (cityChart.value) {
         cityChart.value.dispose()
       }
-      
+
       // 创建新的图表实例
       cityChart.value = echarts.init(cityChartRef.value)
-      
+
       // 显示无数据提示
       const option = {
         graphic: {
@@ -966,15 +961,15 @@ const initCityChart = async () => {
           }
         }
       }
-      
+
       cityChart.value.setOption(option)
     }
     return
   }
-  
+
   // 等待DOM更新
   await nextTick()
-  
+
   if (!cityChartRef.value) {
     return
   }
@@ -1063,7 +1058,7 @@ const initCityChart = async () => {
 
   // 设置配置项并渲染
   cityChart.value.setOption(option)
-  
+
   // 添加点击事件监听
   cityChart.value.on('click', handleCityChartClick)
 }
@@ -1098,9 +1093,9 @@ const handlePieChartClick = (params: any) => {
 // 初始化详情图表
 const initDetailChart = async () => {
   if (!detailChartRef.value || !selectedPieData.value) return
-  
+
   await nextTick()
-  
+
   // 销毁之前的图表实例
   if (detailChart.value) {
     detailChart.value.dispose()
@@ -1110,11 +1105,11 @@ const initDetailChart = async () => {
   detailChart.value = echarts.init(detailChartRef.value)
 
   // 准备数据 - 显示选中项与其他项的对比
-  const selectedIndex = topOperLogData.value.findIndex(item => 
-    item.beanName === selectedPieData.value?.beanName && 
+  const selectedIndex = topOperLogData.value.findIndex(item =>
+    item.beanName === selectedPieData.value?.beanName &&
     item.method === selectedPieData.value?.method
   )
-  
+
   const chartData = topOperLogData.value.map((item, index) => ({
     name: item.title,
     value: item.total,
@@ -1203,7 +1198,7 @@ const fetchUserStats = async () => {
 onMounted(async () => {
   // 设置默认日期范围
   dateRange.value = getDefaultDateRange()
-  
+
   // 立即获取一次数据
   await Promise.all([
     fetchUserStats(),
@@ -1224,7 +1219,7 @@ onMounted(async () => {
 
   // 监听通知关闭事件
   window.addEventListener('notice-closed', fetchUserStats)
-  
+
   // 监听窗口大小变化，重新调整图表大小
   window.addEventListener('resize', handleResize)
 })
@@ -1255,7 +1250,7 @@ onUnmounted(() => {
   }
   window.removeEventListener('notice-closed', fetchUserStats)
   window.removeEventListener('resize', handleResize)
-  
+
   // 销毁图表实例
   if (pieChart.value) {
     pieChart.value.dispose()
@@ -1381,7 +1376,7 @@ onUnmounted(() => {
             .el-input__wrapper {
               background-color: #f8f9fa;
               border: 1px solid #e4e7ed;
-              
+
               &:hover {
                 border-color: #409eff;
               }
@@ -1392,7 +1387,7 @@ onUnmounted(() => {
             .el-input__wrapper {
               background-color: #f8f9fa;
               border: 1px solid #e4e7ed;
-              
+
               &:hover {
                 border-color: #409eff;
               }

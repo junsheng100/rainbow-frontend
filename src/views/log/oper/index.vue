@@ -4,12 +4,12 @@
     <el-card class="search-card" shadow="hover">
       <div class="search-form">
         <el-row :gutter="24">
-          <el-col :span="4">
+          <el-col :span="6">
             <div class="search-item">
-              <el-form-item prop="title" label="模块">
+              <el-form-item prop="keyword" label="关键词">
               <el-input
-                v-model="searchForm.title"
-                placeholder="请输入系统模块"
+                v-model="searchForm.keyword"
+                placeholder="请输入关键词"
                 clearable
                 @keyup.enter="handleSearch"
               >
@@ -20,28 +20,18 @@
               </el-form-item>
             </div>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="8">
             <div class="search-item">
-              <el-form-item prop="operName" label="操作人员">
-              <el-input
-                v-model="searchForm.operName"
-                placeholder="请输入操作人员"
-                clearable
-                @keyup.enter="handleSearch"
-              />
-              </el-form-item>
-            </div>
-
-          </el-col>
-          <el-col :span="4">
-            <div class="search-item">
-              <el-form-item prop="operTime" label="操作时间">
+              <el-form-item prop="dateRange" label="操作时间">
               <el-date-picker
-                v-model="searchForm.operTime"
-                type="datetime"
-                placeholder="请选择操作时间"
+                v-model="dateRange"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始时间"
+                end-placeholder="结束时间"
                 clearable
-                value-format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD HH:mm:ss"
+                @change="handleDateRangeChange"
               />
               </el-form-item>
             </div>
@@ -181,7 +171,7 @@ import {
   batchDeleteOperLog,
   type OperLog,
   type OperLogQueryParams
-} from '@/api/logs/operLog.ts'
+} from '@/api/logs/operLog'
 
 // 响应式数据
 const loading = ref(false)
@@ -192,10 +182,13 @@ const detailData = ref<Partial<OperLog>>({})
 
 // 搜索表单
 const searchForm = reactive<Partial<OperLogQueryParams>>({
-  title: '',
-  operName: '',
-  operTime: ''
+  keyword: '',
+  startTime: '',
+  endTime: ''
 })
+
+// 日期范围选择器
+const dateRange = ref<[string, string] | null>(null)
 
 // 分页数据
 const pagination = reactive({
@@ -211,9 +204,9 @@ const getTableData = async () => {
     const params: OperLogQueryParams = {
       page: pagination.current,
       size: pagination.size,
-      title: searchForm.title,
-      operName: searchForm.operName,
-      operTime: searchForm.operTime
+      keyword: searchForm.keyword,
+      startTime: searchForm.startTime,
+      endTime: searchForm.endTime
     }
 
     const response = await getOperLogPage(params)
@@ -319,10 +312,11 @@ const handleSearch = () => {
 // 重置搜索
 const handleReset = () => {
   Object.assign(searchForm, {
-    title: '',
-    operName: '',
-    operTime: ''
+    keyword: '',
+    startTime: '',
+    endTime: ''
   })
+  dateRange.value = null
   pagination.current = 1
   getTableData()
 }
@@ -340,8 +334,52 @@ const handleCurrentChange = (val: number) => {
   getTableData()
 }
 
+// 日期范围变化处理
+const handleDateRangeChange = (value: [string, string] | null) => {
+  if (value && value.length === 2) {
+    searchForm.startTime = value[0]
+    searchForm.endTime = value[1]
+  } else {
+    searchForm.startTime = ''
+    searchForm.endTime = ''
+  }
+}
+
+// 设置默认时间
+const setDefaultTime = () => {
+  const now = new Date()
+  const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000)
+  
+  // 设置结束时间为当前时间
+  const endTime = formatDateTime(now)
+  
+  // 设置开始时间为前一天的00:00:00
+  const startTime = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0)
+  const startTimeStr = formatDateTime(startTime)
+  
+  // 设置搜索表单
+  searchForm.startTime = startTimeStr
+  searchForm.endTime = endTime
+  
+  // 设置日期范围选择器
+  dateRange.value = [startTimeStr, endTime]
+}
+
+// 格式化日期时间为 YYYY-MM-DD HH:mm:ss 格式
+const formatDateTime = (date: Date): string => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+  
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+}
+
 // 生命周期
 onMounted(() => {
+  setDefaultTime()
   getTableData()
 })
 </script>

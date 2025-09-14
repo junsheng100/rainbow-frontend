@@ -24,23 +24,30 @@ export interface OperLog {
 export interface OperLogQueryParams {
   page: number
   size: number
-  title?: string
-  operName?: string
-  operTime?: string
+  keyword?: string
+  startTime?: string
+  endTime?: string
+}
+
+// 查询数据接口
+export interface OperLogQueryData {
+  keyword?: string
+  startTime?: string
+  endTime?: string
 }
 
 // 获取操作日志分页列表
 export const getOperLogPage = (params: OperLogQueryParams) => {
-  const vo: BaseVo<OperLog> = {
+  const vo: BaseVo<OperLogQueryData> = {
     pageNo: params.page,
     pageSize: params.size,
     data: {
-      title: params.title,
-      operName: params.operName,
-      operTime: params.operTime
+      keyword: params.keyword,
+      startTime: params.startTime,
+      endTime: params.endTime
     }
   }
-  return request.post<PageResponse<OperLog>>('/oper/log/page', vo)
+  return request.post<PageResponse<OperLog>>('/oper/log/page/list', vo)
 }
 
 // 获取操作日志详情

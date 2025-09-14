@@ -290,12 +290,13 @@ import {
   deleteWallpaper,
   type Wallpaper,
   type WallpaperQueryParams
-} from '@/api/files/wallpaper.ts'
+} from '@/api/files/wallpaper'
 import {useUserStore} from '@/stores/user'
 import {ElMessage, ElMessageBox} from 'element-plus'
 import {getResourceUrl} from '@/config'
 import {handleError} from '@/utils/errorHandler'
-import {getToken} from '@/utils/auth.ts'
+import {getToken} from '@/utils/auth'
+import { TokenCookie } from '@/utils/cookies'
 
 // 响应式数据
 const loading = ref(false)
@@ -380,7 +381,6 @@ const getImageUrl = (row: Wallpaper) => {
   if (row.localPath) {
     try {
       const url = getResourceUrl(row.localPath)
-      // console.log('生成的本地图片 URL:', url)
       return url
     } catch (error) {
       console.error('生成图片 URL 出错:', error)
@@ -548,7 +548,7 @@ const resetForm = () => {
 }
 
 // 上传相关
-const uploadUrl = '/web/api/wallpaper/upload'  // 使用相对路径
+const uploadUrl = '/api/wallpaper/upload'  // 使用相对路径
 
 console.log('上传 URL:', uploadUrl)
 
@@ -559,8 +559,9 @@ const uploadHeaders = computed(() => {
     ElMessage.error('未登录或登录已过期，请重新登录')
     return {}
   }
+  const tokenType = TokenCookie.getTokenType() || 'Bearer'
   const headers = {
-    Authorization: `Bearer ${token}`,
+    Authorization: `${tokenType} ${token}`,
     'X-Requested-With': 'XMLHttpRequest'  // 添加 AJAX 标识
   }
 

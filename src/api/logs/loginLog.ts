@@ -19,23 +19,30 @@ export interface LoginLog {
 export interface LoginLogQueryParams {
   page: number
   size: number
-  userName?: string
-  ipaddr?: string
-  operTime?: string
+  keyword?: string
+  startTime?: string
+  endTime?: string
+}
+
+// 查询数据接口
+export interface LoginLogQueryData {
+  keyword?: string
+  startTime?: string
+  endTime?: string
 }
 
 // 获取登录日志分页列表
 export const getLoginLogPage = (params: LoginLogQueryParams) => {
-  const vo: BaseVo<LoginLog> = {
+  const vo: BaseVo<LoginLogQueryData> = {
     pageNo: params.page,
     pageSize: params.size,
     data: {
-      userName: params.userName,
-      ipaddr: params.ipaddr,
-      operTime: params.operTime
+      keyword: params.keyword,
+      startTime: params.startTime,
+      endTime: params.endTime
     }
   }
-  return request.post<PageResponse<LoginLog>>('/login/user/page', vo)
+  return request.post<PageResponse<LoginLog>>('/login/user/page/list', vo)
 }
 
 // 获取登录日志详情
@@ -80,7 +87,7 @@ export const getOnlinePage = (params: LoginLogQueryParams) => {
   const vo: BaseVo<string> = {
     pageNo: params.page,
     pageSize: params.size,
-    data: params.userName
+    data: params.keyword
   }
   return request.post<PageResponse<LoginLog>>('/login/user/online', vo)
 }

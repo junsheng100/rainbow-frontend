@@ -4,12 +4,12 @@
     <el-card class="search-card" shadow="hover">
       <div class="search-form">
         <el-row :gutter="24">
-          <el-col :span="5">
+          <el-col :span="6">
             <div class="search-item">
-              <el-form-item prop="userName" label="用户账号">
+              <el-form-item prop="keyword" label="关键词">
               <el-input
-                v-model="searchForm.userName"
-                placeholder="请输入用户账号"
+                v-model="searchForm.keyword"
+                placeholder="请输入关键词"
                 clearable
                 @keyup.enter="handleSearch"
               >
@@ -20,8 +20,22 @@
               </el-form-item>
             </div>
           </el-col>
-
-
+          <el-col :span="8">
+            <div class="search-item">
+              <el-form-item prop="dateRange" label="登录时间">
+              <el-date-picker
+                v-model="dateRange"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始时间"
+                end-placeholder="结束时间"
+                clearable
+                value-format="YYYY-MM-DD HH:mm:ss"
+                @change="handleDateRangeChange"
+              />
+              </el-form-item>
+            </div>
+          </el-col>
           <el-col :span="6">
             <el-button type="primary" @click="handleSearch">
               <el-icon><Search /></el-icon>
@@ -150,8 +164,8 @@ import {
   batchDeleteLoginLog,
   type LoginLog,
   type LoginLogQueryParams
-} from '@/api/logs/loginLog.ts'
-import Template from "@/router/modules/template.ts";
+} from '@/api/logs/loginLog'
+import Template from "@/router/modules/template";
 
 // 响应式数据
 const loading = ref(false)
@@ -162,10 +176,13 @@ const detailData = ref<Partial<LoginLog>>({})
 
 // 搜索表单
 const searchForm = reactive<Partial<LoginLogQueryParams>>({
-  userName: '',
-  ipaddr: '',
-  operTime: ''
+  keyword: '',
+  startTime: '',
+  endTime: ''
 })
+
+// 日期范围选择器
+const dateRange = ref<[string, string] | null>(null)
 
 // 分页数据
 const pagination = reactive({
@@ -181,9 +198,9 @@ const getTableData = async () => {
     const params: LoginLogQueryParams = {
       page: pagination.current,
       size: pagination.size,
-      userName: searchForm.userName,
-      ipaddr: searchForm.ipaddr,
-      operTime: searchForm.operTime
+      keyword: searchForm.keyword,
+      startTime: searchForm.startTime,
+      endTime: searchForm.endTime
     }
 
     const response = await getLoginLogPage(params)
@@ -286,10 +303,11 @@ const handleSearch = () => {
 // 重置搜索
 const handleReset = () => {
   Object.assign(searchForm, {
-    userName: '',
-    ipaddr: '',
-    loginTime: ''
+    keyword: '',
+    startTime: '',
+    endTime: ''
   })
+  dateRange.value = null
   pagination.current = 1
   getTableData()
 }
@@ -307,8 +325,52 @@ const handleCurrentChange = (val: number) => {
   getTableData()
 }
 
+// 日期范围变化处理
+const handleDateRangeChange = (value: [string, string] | null) => {
+  if (value && value.length === 2) {
+    searchForm.startTime = value[0]
+    searchForm.endTime = value[1]
+  } else {
+    searchForm.startTime = ''
+    searchForm.endTime = ''
+  }
+}
+
+// 设置默认时间
+const setDefaultTime = () => {
+  const now = new Date()
+  const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000)
+  
+  // 设置结束时间为当前时间
+  const endTime = formatDateTime(now)
+  
+  // 设置开始时间为前一天的00:00:00
+  const startTime = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0)
+  const startTimeStr = formatDateTime(startTime)
+  
+  // 设置搜索表单
+  searchForm.startTime = startTimeStr
+  searchForm.endTime = endTime
+  
+  // 设置日期范围选择器
+  dateRange.value = [startTimeStr, endTime]
+}
+
+// 格式化日期时间为 YYYY-MM-DD HH:mm:ss 格式
+const formatDateTime = (date: Date): string => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+  
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+}
+
 // 生命周期
 onMounted(() => {
+  setDefaultTime()
   getTableData()
 })
 </script>

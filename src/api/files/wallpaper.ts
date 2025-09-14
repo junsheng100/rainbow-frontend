@@ -44,7 +44,6 @@ export interface WallpaperQueryParams {
 
 // 获取壁纸分页列表
 export const getWallpaperPage = (params: WallpaperQueryParams) => {
-    // console.log("##### params:",JSON.stringify(params))
     const vo: BaseVo<Wallpaper> = {
         pageNo: params.page,
         pageSize: params.size,
@@ -203,9 +202,8 @@ export class WallpaperApi {
 
     // 获取随机壁纸（免 token）
     static async getPublicRandomWallpaper(): Promise<WallpaperResponse> {
-        // console.log('Random wallpaper API response:', `/wallpaper/public/random`)
         const response = await publicService.get<ApiResponse<WallpaperResponse>>(`/wallpaper/public/random`)
-        // console.log('Random wallpaper API response:', response)
+
 
         // 检查响应结构
         if (response.data.code === 200 && response.data.data) {
@@ -217,9 +215,7 @@ export class WallpaperApi {
 
     // 获取近期的壁纸（免 token）
     static async getPublicLatestWallpaper(): Promise<WallpaperResponse> {
-        // console.log('Random wallpaper API response:', `/wallpaper/public/random`)
         const response = await publicService.get<ApiResponse<WallpaperResponse>>(`/wallpaper/public/latest`)
-        // console.log('Random wallpaper API response:', response)
 
         // 检查响应结构
         if (response.data.code === 200 && response.data.data) {

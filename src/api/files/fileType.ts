@@ -52,3 +52,14 @@ export function batchDeleteFileType(ids: number[]) {
 export function updateFileTypeStatus(id: number, status: number) {
     return request.put(`/mime/type/${id}/status`, {status})
 }
+
+
+// 获取许可文件类型
+export const findAllowFileTypeList = () => {
+    return request.get<FileType>(`/mime/type/allow/data`)
+}
+
+// 获取文件类型分组数据
+export const getFileTypeGroupData = () => {
+    return request.get<Record<string, string[]>>(`/mime/type/allow/group`)
+}

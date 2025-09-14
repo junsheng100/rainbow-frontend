@@ -6,9 +6,9 @@
         <el-row :gutter="24">
           <el-col :span="5">
             <div class="search-item">
-              <el-form-item prop="userName" label="关键词">
+              <el-form-item prop="keyword" label="关键词">
                 <el-input
-                    v-model="searchForm.userName"
+                    v-model="searchForm.keyword"
                     placeholder="请输入关键词"
                     clearable
                     @keyup.enter="handleSearch"
@@ -151,9 +151,9 @@ const detailData = ref<Partial<LoginLog>>({})
 
 // 搜索表单
 const searchForm = reactive<Partial<LoginLogQueryParams>>({
-  userName: '',
-  ipaddr: '',
-  operTime: ''
+  keyword: '',
+  startTime: '',
+  endTime: ''
 })
 
 // 分页数据
@@ -170,9 +170,9 @@ const getTableData = async () => {
     const params: LoginLogQueryParams = {
       page: pagination.current,
       size: pagination.size,
-      userName: searchForm.userName,
-      ipaddr: searchForm.ipaddr,
-      operTime: searchForm.operTime
+      keyword: searchForm.keyword,
+      startTime: searchForm.startTime,
+      endTime: searchForm.endTime
     }
 
     const response = await getOnlinePage(params)
@@ -275,9 +275,9 @@ const handleSearch = () => {
 // 重置搜索
 const handleReset = () => {
   Object.assign(searchForm, {
-    userName: '',
-    ipaddr: '',
-    loginTime: ''
+    keyword: '',
+    startTime: '',
+    endTime: ''
   })
   pagination.current = 1
   getTableData()

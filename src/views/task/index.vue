@@ -383,7 +383,6 @@ function submitForm() {
     if (valid) {
       form.value.params = taskParams.value;
 
-      console.log("##### TaskConfig:",JSON.stringify(form))
 
       if (form.value.id) {
         updateTask(form.value).then(() => {

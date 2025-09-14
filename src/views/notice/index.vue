@@ -391,7 +391,6 @@ const handleViewDetail = async (row: NoticeInfo) => {
   try {
     if (row.noticeId) {
       const res = await readNotice(row.noticeId)
-      console.log('获取到的通知详情数据:', res)
       detailForm.value = res
     }
   } catch (error) {
@@ -425,15 +424,15 @@ const handlePush = async (row: NoticeInfo) => {
 const handlePushSubmit = async (data: NoticePushParams) => {
   try {
     // 确保 deptIds 是数字数组
-    const numericDeptIds = Array.isArray(data.deptIds) 
+    const numericDeptIds = Array.isArray(data.deptIds)
       ? data.deptIds.map((id: any) => Number(id)).filter((id: number) => !isNaN(id))
       : []
-    
+
     // 确保 userIds 是字符串数组
     const stringUserIds = Array.isArray(data.userIds)
       ? data.userIds.map((id: any) => String(id))
       : []
-    
+
     const pushData: NoticePushParams = {
       noticeId: data.noticeId,
       noticeTitle: data.noticeTitle,

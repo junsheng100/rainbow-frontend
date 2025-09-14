@@ -52,6 +52,7 @@
       <el-table-column label="序号" align="center" prop="dictSort" />
       <el-table-column label="字典编码" align="center" prop="dictCode" v-if="false"/>
       <el-table-column label="字典标签" align="center" prop="dictLabel" />
+      <el-table-column label="数据名称" align="center" prop="dictName" />
       <el-table-column label="字典键值" align="center" prop="dictValue" />
 
       <el-table-column label="状态" align="center" prop="status" width="100">
@@ -105,6 +106,9 @@
         </el-form-item>
         <el-form-item label="数据标签" prop="dictLabel">
           <el-input v-model="form.dictLabel" placeholder="请输入数据标签" />
+        </el-form-item>
+        <el-form-item label="数据名称" prop="dictName">
+          <el-input v-model="form.dictName" placeholder="请输入数据名称" />
         </el-form-item>
         <el-form-item label="数据键值" prop="dictValue">
           <el-input v-model="form.dictValue" placeholder="请输入数据键值" />
@@ -176,6 +180,7 @@ const form = reactive<SysDictData>({
   dictCode: undefined,
   dictType: dictType.value,
   dictLabel: '',
+  dictName: '',
   dictValue: '',
   dictSort: 0,
   isDefault: 'N',
@@ -186,6 +191,9 @@ const form = reactive<SysDictData>({
 const rules = reactive<FormRules>({
   dictLabel: [
     { required: true, message: '数据标签不能为空', trigger: 'blur' }
+  ],
+  dictName: [
+    { required: true, message: '数据名称不能为空', trigger: 'blur' }
   ],
   dictValue: [
     { required: true, message: '数据键值不能为空', trigger: 'blur' }
@@ -224,6 +232,7 @@ function cancel() {
 function reset() {
   form.dictCode = undefined
   form.dictLabel = ''
+  form.dictName = ''
   form.dictValue = ''
   form.dictSort = 0
   form.isDefault = 'N'

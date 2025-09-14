@@ -153,8 +153,8 @@
 import {ref, onMounted, reactive, watch} from 'vue'
 import {ElMessage, ElMessageBox} from 'element-plus'
 import type {FormInstance, FormRules} from 'element-plus'
-import {getDeptList, createDept, updateDept, deleteDept} from '@/api/system/dept.ts'
-import type {DeptInfo, DeptQuery} from '@/api/system/dept.ts'
+import {getDeptList, createDept, updateDept, deleteDept} from '@/api/system/dept'
+import type {DeptInfo, DeptQuery} from '@/api/system/dept'
 import {Search, Refresh, Plus, Operation} from '@element-plus/icons-vue'
 
 const loading = ref(false)
@@ -231,7 +231,7 @@ const resetQuery = () => {
 // 展开/折叠
 const handleExpandAll = () => {
   isExpandAll.value = !isExpandAll.value
-  console.log("######## 展开状态:", isExpandAll.value)
+
 
   if (isExpandAll.value) {
     // 获取所有部门的ID
@@ -255,8 +255,8 @@ const handleExpandAll = () => {
 }
 
 // 监听展开键的变化
-watch(expandedKeys, (newKeys) => {
-  console.log("######## expandedKeys变化:", newKeys)
+watch(expandedKeys, () => {
+
 }, {deep: true})
 
 // 获取部门列表

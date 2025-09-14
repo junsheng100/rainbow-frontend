@@ -291,7 +291,6 @@ const handleAdd = async () => {
     open.value = true
     // 加载空的菜单树
     await loadMenuTree()
-    console.log("新增角色，加载空菜单树")
   } catch (error) {
     console.error('加载菜单树失败:', error)
     ElMessage.error('加载菜单树失败')
@@ -408,7 +407,6 @@ const handleCurrentChange = (val: number) => {
 // 加载菜单树数据
 const loadMenuTree = async (roleId?: number) => {
   try {
-    // console.log("开始加载菜单树:", roleId)
     const res = await getRoleMenuTree(roleId || 0)
     console.log("菜单树数据:", JSON.stringify(res))
     // 直接使用返回的数据数组

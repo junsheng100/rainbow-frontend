@@ -62,7 +62,6 @@ app.config.errorHandler = (err: any, _vm, _info) => {
 
   // 如果业务层已经处理过错误，不再重复显示
   if (businessErrorHandled) {
-    console.log('业务层已处理错误，跳过全局显示')
     return
   }
 
@@ -100,7 +99,6 @@ window.addEventListener('unhandledrejection', (event) => {
   if (reason && typeof reason === 'object') {
     // 跳过网络错误（通常业务层会处理）
     if (reason.message && reason.message.includes('Request failed')) {
-      // console.log('网络错误通常由业务层处理，跳过全局显示')
       event.preventDefault()
       return
     }

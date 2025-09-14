@@ -40,7 +40,6 @@ export class SystemWallpaperService {
       // 检查缓存
       const cachedData = this.getCachedData()
       if (cachedData) {
-        // //  console.log('使用缓存的壁纸数据:', cachedData)
         return cachedData
       }
 
@@ -48,7 +47,6 @@ export class SystemWallpaperService {
       // //  console.log('开始获取壁纸数据...')
       const response = await publicService.get<ApiResponse<WallpaperResponse[]>>(`/wallpaper/public/latest`)
 
-      // //  console.log('API响应数据:', response)
       if (!response.data.code) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -81,7 +79,6 @@ export class SystemWallpaperService {
         const cachedData = localStorage.getItem(this.CACHE_KEY)
         if (cachedData) {
           const parsedData = JSON.parse(cachedData)
-          // //  console.log('读取缓存数据:', parsedData)
           return parsedData
         }
       }
@@ -114,7 +111,6 @@ export class SystemWallpaperService {
    */
   async initCarousel(): Promise<void> {
     try {
-      // //  console.log('开始初始化壁纸轮播...')
       const wallpapers = await this.fetchWallpapers()
       this.wallpapers = wallpapers
 
@@ -122,7 +118,6 @@ export class SystemWallpaperService {
 
       // 随机选择起始图片
       this.currentIndex = Math.floor(Math.random() * this.wallpapers.length)
-      // //  console.log('随机选择的起始索引:', this.currentIndex)
 
       // 显示壁纸
       this.showCurrentWallpaper()
@@ -135,7 +130,6 @@ export class SystemWallpaperService {
       console.error('初始化壁纸失败:', error)
 
       // 使用默认壁纸
-      //  console.log('切换到默认壁纸')
       this.wallpapers = [this.DEFAULT_WALLPAPER]
       this.currentIndex = 0
       this.showCurrentWallpaper()
@@ -203,8 +197,6 @@ export class SystemWallpaperService {
     }
 
     this.currentIndex = (this.currentIndex + 1) % this.wallpapers.length
-    // //  console.log('新索引:', this.currentIndex)
-    // //  console.log('切换到:', this.wallpapers[this.currentIndex])
     this.showCurrentWallpaper()
   }
 
@@ -212,9 +204,6 @@ export class SystemWallpaperService {
    * 切换到上一张壁纸
    */
   prevWallpaper(): void {
-    // //  console.log('=== 切换到上一张壁纸 ===')
-    // //  console.log('当前索引:', this.currentIndex)
-    // //  console.log('总壁纸数量:', this.wallpapers.length)
 
     if (this.wallpapers.length <= 1) {
       //  console.log('壁纸数量不足，无法切换')
@@ -222,8 +211,6 @@ export class SystemWallpaperService {
     }
 
     this.currentIndex = (this.currentIndex - 1 + this.wallpapers.length) % this.wallpapers.length
-    // //  console.log('新索引:', this.currentIndex)
-    // //  console.log('切换到:', this.wallpapers[this.currentIndex])
     this.showCurrentWallpaper()
   }
 
@@ -252,7 +239,6 @@ export class SystemWallpaperService {
     // 清除缓存
     localStorage.removeItem(this.CACHE_KEY)
     localStorage.removeItem(this.CACHE_TIMESTAMP_KEY)
-    // //  console.log('已清除缓存')
 
     // 重新初始化
     await this.initCarousel()

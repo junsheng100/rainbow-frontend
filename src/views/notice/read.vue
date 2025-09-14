@@ -284,7 +284,6 @@ const handleViewDetail = async (row: NoticeInfo) => {
   try {
     if (row.noticeId) {
       const res = await readNotice(row.noticeId)
-      console.log('获取到的通知详情数据:', res)
       detailForm.value = res
     }
   } catch (error) {

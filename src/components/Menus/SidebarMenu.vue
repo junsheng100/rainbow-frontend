@@ -8,6 +8,7 @@
     :text-color="textColor"
     :active-text-color="activeTextColor"
     :collapse-transition="collapseTransition"
+    unique-opened
     @select="handleSelect"
   >
     <!-- 首页概览 -->

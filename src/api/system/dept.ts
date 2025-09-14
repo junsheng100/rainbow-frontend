@@ -85,6 +85,5 @@ export const getDeptUserList = (pushType :string,deptIdList: number[]) => {
         pushType : pushType,
         deptIdList :  deptIdList
     }
-    console.log("#########",JSON.stringify(data));
     return request.post<DeptUserInfo[]>(`/dept/user`, data)
 }

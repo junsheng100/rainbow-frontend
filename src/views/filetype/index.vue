@@ -9,7 +9,7 @@
               placeholder="请输入"
               clearable
               style="width: 120px"
-              @keyup.enter.native="handleQuery"
+              @keyup.enter="handleQuery"
           />
         </el-form-item>
         <el-form-item label="MIME类型" prop="mimeType" label-width="80px">
@@ -18,7 +18,7 @@
               placeholder="请输入"
               clearable
               style="width: 140px"
-              @keyup.enter.native="handleQuery"
+              @keyup.enter="handleQuery"
           />
         </el-form-item>
         <!--             :label="dict.value === 0?'不可用':'可用'"-->
@@ -154,13 +154,13 @@
         <el-form-item label="Logo" prop="logo">
           <el-upload
               class="logo-uploader"
-              :action="'/web/api/mime/type/upload'"
+              :action="'/api/mime/type/upload'"
               :show-file-list="false"
               :on-success="handleLogoSuccess"
               :on-error="handleLogoError"
               :before-upload="beforeLogoUpload"
               :headers="uploadHeaders"
-              accept="image/*"
+              accept=".jpg,.jpeg,.png,.gif,.bmp,.webp,.svg,image/jpeg,image/png,image/gif,image/bmp,image/webp,image/svg+xml"
           >
             <img v-if="form.logo" :src="getResourceUrl(form.logo)" class="logo-image"/>
             <el-icon v-else class="logo-uploader-icon">
@@ -168,7 +168,8 @@
             </el-icon>
           </el-upload>
           <div class="el-upload__tip">
-            请上传不大于10MB的图片文件
+            请上传不大于1MB的图片文件<br/>
+            支持格式: JPG, PNG, GIF, BMP, WEBP, SVG
           </div>
         </el-form-item>
         <el-form-item label="是否启用" prop="approve">
@@ -214,7 +215,7 @@ import {
   updateFileType,
   deleteFileType,
   batchDeleteFileType,
-} from '@/api/files/fileType.ts'
+} from '@/api/files/fileType'
 
 // 查询参数
 const queryParams = reactive<FileTypeQuery>({
@@ -425,19 +426,37 @@ const handleLogoError = () => {
 
 // 上传前验证
 const beforeLogoUpload = (file: File) => {
-  // 检查文件类型
-  const isImage = file.type.startsWith('image/')
-  // 检查文件大小，10MB = 10 * 1024 * 1024 bytes
-  const isLt10M = file.size / 1024 / 1024 < 10
+  // 检查文件类型 - 严格限制为图片格式
+  const allowedImageTypes = [
+    'image/jpeg',
+    'image/jpg', 
+    'image/png',
+    'image/gif',
+    'image/bmp',
+    'image/webp',
+    'image/svg+xml'
+  ]
+  
+  const isImage = allowedImageTypes.includes(file.type.toLowerCase())
+  
+  // 检查文件扩展名
+  const fileName = file.name.toLowerCase()
+  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg']
+  const hasValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext))
+  
+  // 检查文件大小，1MB = 1 * 1024 * 1024 bytes
+  const isLt1M = file.size / 1024 / 1024 < 1
 
-  if (!isImage) {
-    ElMessage.error('只能上传图片文件!')
+  if (!isImage && !hasValidExtension) {
+    ElMessage.error('只能上传图片文件! 支持格式: JPG, PNG, GIF, BMP, WEBP, SVG')
     return false
   }
-  if (!isLt10M) {
-    ElMessage.error('图片大小不能超过 10MB!')
+  
+  if (!isLt1M) {
+    ElMessage.error('图片大小不能超过 1MB!')
     return false
   }
+  
   return true
 }
 

@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw, RouteRecordRedirectOption } from 'vue-router'
 
 export interface CustomRouteRecordRaw extends Omit<RouteRecordRaw, 'meta' | 'children' | 'redirect'> {
@@ -15,6 +15,7 @@ export interface CustomRouteRecordRaw extends Omit<RouteRecordRaw, 'meta' | 'chi
 }
 import { usePermissionStore } from '@/store/modules/permission'
 import { useUserStore } from '@/stores/user'
+import { useFileConfigStore } from '@/stores/fileConfig'
 import { ElMessage } from 'element-plus'
 import 'nprogress/nprogress.css'
 import { progressBar } from '@/utils/progressBar'
@@ -75,7 +76,7 @@ const constantRoutes: CustomRouteRecordRaw[] = [
 
 // 创建路由实例
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: constantRoutes as unknown as RouteRecordRaw[]
 })
 
@@ -135,16 +136,12 @@ router.beforeEach(async (to, _from, next) => {
 
   const userStore = useUserStore()
   const permissionStore = usePermissionStore()
+  const fileConfigStore = useFileConfigStore()
   const token = userStore.token
 
   // 开发环境下打印路由信息
   if (import.meta.env.DEV) {
-/*    console.log('Current route:', {
-      path: to.path,
-      name: to.name,
-      matched: to.matched.length,
-      routes: router.getRoutes().map(r => ({ name: r.name, path: r.path }))
-    })*/
+
   }
 
   if (token) {
@@ -185,6 +182,15 @@ router.beforeEach(async (to, _from, next) => {
             replace: true
           })
         } else {
+          // 检查是否进入文件列表页面，如果是则更新文件配置
+          if (to.path.includes('/filelist') || to.name === 'FileList') {
+            try {
+              await fileConfigStore.loadFileConfig(true) // 强制刷新配置
+              console.log('进入文件列表页面，配置已更新:', fileConfigStore.config)
+            } catch (error) {
+              console.error('更新文件配置失败:', error)
+            }
+          }
           next()
         }
       } catch (error) {

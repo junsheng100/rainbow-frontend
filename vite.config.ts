@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => {
           target: env.VITE_DEV_PROXY_TARGET || 'http://127.0.0.1:8080',
           changeOrigin: true,
           secure: false,
-          rewrite: (path) => path.replace(/^\/resources/, '/api/'),  // 移除前缀 /resources
+          // rewrite: (path) => path.replace(/^\/resources/, '/'),  // 移除前缀 /resources
           configure: (proxy, _options) => {
             proxy.on('proxyReq', (proxyReq, req, _res) => {
               // 设置正确的 Origin 头

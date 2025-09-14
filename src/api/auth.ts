@@ -1,21 +1,25 @@
 import request from '@/utils/request'
 import type {LoginForm} from '@/types/user'
 import type {RouteRecordRaw} from 'vue-router'
+import { TokenCookie } from '@/utils/cookies'
 
 export interface LoginResponse {
     accessToken: string
     refreshToken: string
+    tokenType: string
+    expiresIn: number
     userId: string
     userName: string
     nickname: string
     userType: string
     avatar: string
-
 }
 
 export interface RefreshTokenResponse {
     accessToken: string
     refreshToken: string
+    tokenType: string
+    expiresIn: number
 }
 
 // 修改密码参数接口
@@ -61,9 +65,13 @@ export const logout = () => {
  * @param refreshToken 刷新令牌
  */
 export const refreshAccessToken = (refreshToken: string) => {
+    // 获取动态的 tokenType
+    const tokenType = TokenCookie.getTokenType() || 'Bearer'
+    const authHeader = refreshToken.startsWith(tokenType + ' ') ? refreshToken : `${tokenType} ${refreshToken}`
+    
     return request.post<RefreshTokenResponse>('/auth/refresh', {}, {
         headers: {
-            'Authorization': refreshToken.startsWith('Bearer ') ? refreshToken : `Bearer ${refreshToken}`
+            'Authorization': authHeader
         }
     })
 }

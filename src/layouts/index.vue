@@ -44,13 +44,6 @@
                   </el-icon>
                   个人中心
                 </el-dropdown-item>
-                <el-dropdown-item @click="toggleMenuPosition">
-                  <el-icon>
-                    <ArrowRight v-if="menuPosition === 'left'"/>
-                    <ArrowLeft v-else/>
-                  </el-icon>
-                  {{ menuPosition === 'left' ? '菜单移至右侧' : '菜单移至左侧' }}
-                </el-dropdown-item>
                 <el-dropdown-item @click="showChangePassword = true">
                   <el-icon>
                     <Lock/>
@@ -72,11 +65,7 @@
 
     <el-container class="main-container">
       <!-- 左侧边栏 -->
-      <el-aside 
-        v-if="menuPosition === 'left'"
-        class="sidebar left-sidebar" 
-        :width="isCollapsed ? '64px' : '240px'"
-      >
+      <el-aside class="sidebar" :width="isCollapsed ? '64px' : '240px'">
         <div class="sidebar-header">
           <el-icon class="sidebar-logo">
             <Monitor/>
@@ -92,8 +81,7 @@
             text-color="#bdc3c7"
             active-text-color="#3498db"
             :collapse-transition="false"
-            :unique-opened="true"
-            @open="handleSubMenuOpen"
+            unique-opened
         >
           <el-menu-item index="/dashboard" class="menu-item">
             <el-icon>
@@ -106,13 +94,7 @@
       </el-aside>
 
       <!-- 主内容区 -->
-      <el-main 
-        class="main-content" 
-        :class="{ 
-          'with-left-menu': menuPosition === 'left',
-          'with-right-menu': menuPosition === 'right'
-        }"
-      >
+      <el-main class="main-content">
         <!-- 页面标签 -->
         <PageTabs/>
 
@@ -121,40 +103,6 @@
           <router-view/>
         </div>
       </el-main>
-
-      <!-- 右侧边栏 -->
-      <el-aside 
-        v-if="menuPosition === 'right'"
-        class="sidebar right-sidebar" 
-        :width="isCollapsed ? '64px' : '240px'"
-      >
-        <div class="sidebar-header">
-          <el-icon class="sidebar-logo">
-            <Monitor/>
-          </el-icon>
-          <span class="sidebar-title" v-show="!isCollapsed">管理系统</span>
-        </div>
-        <el-menu
-            :default-active="route.path"
-            class="sidebar-menu"
-            router
-            :collapse="isCollapsed"
-            background-color="#2c3e50"
-            text-color="#bdc3c7"
-            active-text-color="#3498db"
-            :collapse-transition="false"
-            :unique-opened="true"
-            @open="handleSubMenuOpen"
-        >
-          <el-menu-item index="/dashboard" class="menu-item">
-            <el-icon>
-              <HomeFilled/>
-            </el-icon>
-            <template #title>首页概览</template>
-          </el-menu-item>
-          <MenuItem v-for="route in menuRoutes" :key="route.path" :route="route"/>
-        </el-menu>
-      </el-aside>
     </el-container>
 
     <!-- 修改密码弹窗 -->
@@ -185,7 +133,7 @@ import {useTabsStore} from '@/stores/tabs'
 import {getResourceUrl} from "@/config"
 import {usePermissionStore} from '@/store/modules/permission'
 import MenuItem from '@/components/Layout/MenuItem.vue'
-import {ArrowDown, ArrowLeft, ArrowRight, Expand, Fold, HomeFilled, Lock, Monitor, SwitchButton, User} from '@element-plus/icons-vue'
+import {ArrowDown, Expand, Fold, HomeFilled, Lock, Monitor, SwitchButton, User} from '@element-plus/icons-vue'
 import ChangePassword from '@/components/ChangePassword/index.vue'
 import PageTabs from '@/components/PageTabs/index.vue'
 import { countWillPush } from '@/api/notice/push'
@@ -207,7 +155,6 @@ const menuRoutes = computed(() => {
 
 const showChangePassword = ref(false)
 const isCollapsed = ref(false)
-const menuPosition = ref<'left' | 'right'>('left') // 菜单位置：左侧或右侧
 
 // 监听路由变化，添加标签页
 watch(
@@ -222,17 +169,6 @@ watch(
 
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value
-}
-
-// 切换菜单位置
-const toggleMenuPosition = () => {
-  menuPosition.value = menuPosition.value === 'left' ? 'right' : 'left'
-}
-
-// 处理子菜单打开，实现手风琴效果
-const handleSubMenuOpen = (index: string, indexPath: string[]) => {
-  // 这里可以添加额外的逻辑，比如记录当前打开的菜单
-  console.log('子菜单打开:', index, indexPath)
 }
 
 const handlePasswordChangeSuccess = async () => {
@@ -388,7 +324,6 @@ const handleLogout = async () => {
 
   .main-container {
     height: calc(100vh - 60px);
-    display: flex;
 
     .sidebar {
       background-color: #2c3e50;
@@ -396,14 +331,6 @@ const handleLogout = async () => {
       transition: width 0.3s ease;
       overflow-x: hidden;
       overflow-y: auto;
-
-      &.left-sidebar {
-        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-      }
-
-      &.right-sidebar {
-        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
-      }
 
       /* 自定义滚动条样式 */
       &::-webkit-scrollbar {
@@ -446,10 +373,27 @@ const handleLogout = async () => {
         }
       }
 
-              .sidebar-menu {
-          border: none;
+      .sidebar-menu {
+        border: none;
 
-          :deep(.el-menu-item) {
+        :deep(.el-menu-item) {
+          height: 48px;
+          line-height: 48px;
+          margin: 4px 8px;
+          border-radius: 6px;
+
+          &:hover {
+            background-color: #34495e !important;
+          }
+
+          &.is-active {
+            background-color: #3498db !important;
+            color: white !important;
+          }
+        }
+
+        :deep(.el-sub-menu) {
+          .el-sub-menu__title {
             height: 48px;
             line-height: 48px;
             margin: 4px 8px;
@@ -458,50 +402,8 @@ const handleLogout = async () => {
             &:hover {
               background-color: #34495e !important;
             }
-
-            &.is-active {
-              background-color: #3498db !important;
-              color: white !important;
-            }
           }
-
-          :deep(.el-sub-menu) {
-            .el-sub-menu__title {
-              height: 48px;
-              line-height: 48px;
-              margin: 4px 8px;
-              border-radius: 6px;
-
-              &:hover {
-                background-color: #34495e !important;
-              }
-            }
-
-            // 子菜单样式优化
-            .el-menu {
-              background-color: rgba(0, 0, 0, 0.1);
-              border-radius: 0 0 6px 6px;
-              margin: 0 8px;
-              overflow: hidden;
-              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-              .el-menu-item {
-                margin: 2px 0;
-                border-radius: 4px;
-                transition: all 0.2s ease;
-
-                &:hover {
-                  background-color: rgba(52, 152, 219, 0.1);
-                  transform: translateX(4px);
-                }
-
-                &.is-active {
-                  background-color: rgba(52, 152, 219, 0.2);
-                  transform: translateX(8px);
-                }
-              }
-            }
-          }
+        }
 
         // 折叠状态下的样式
         &.el-menu--collapse {
@@ -530,9 +432,7 @@ const handleLogout = async () => {
       background-color: #f8f9fa;
       padding: 0;
       overflow-y: auto;
-      transition: all 0.3s ease;
-      flex: 1;
-      min-width: 0;
+      transition: margin-left 0.3s ease;
 
       .page-content {
         padding: 20px;
@@ -569,20 +469,11 @@ const handleLogout = async () => {
         position: fixed;
         height: calc(100vh - 60px);
         z-index: 999;
-
-        &.left-sidebar {
-          box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-        }
-
-        &.right-sidebar {
-          right: 0;
-          box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
-        }
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
       }
 
       .main-content {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+        margin-left: 0;
       }
     }
   }

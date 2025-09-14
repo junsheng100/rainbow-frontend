@@ -6,6 +6,7 @@ export interface SysDictData {
   dictLabel: string
   dictType: string
   dictValue: string
+  dictName?: string
   dictSort: number
   status: string
   remark?: string

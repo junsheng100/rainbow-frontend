@@ -62,7 +62,6 @@ export const getEntityList = () => {
 }
 
 export const addTemplateEntity = (data: TemplateEntity) => {
-    console.log('请求参数:', JSON.stringify(data))
     return request.post<TemplateEntity>('/template/entity', data)
 }
 
